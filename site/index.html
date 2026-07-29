@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profesionistas Bilingües — Sé Bilingüe | Palm Learning Center</title>
+  <meta name="description" content="Bilingual Workforce Performance Program™ — coaching de inglés laboral para profesionistas y organizaciones. Sé Bilingüe.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Profesionistas Bilingües — Sé Bilingüe | Palm Learning Center">
+  <meta property="og:description" content="Bilingual Workforce Performance Program™ — coaching de inglés laboral para profesionistas y organizaciones. Sé Bilingüe.">
+  <meta property="og:image" content="./assets/hero-professional.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../assets/favicon-512.png" type="image/png" sizes="512x512">
+  <link rel="apple-touch-icon" href="../assets/favicon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="./site.css">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+  <script src="../_ds_bundle.js"></script>
+  <script src="../ui_kits/marketing-site/image-slot.js"></script>
+  <script src="./router.js"></script>
+  <script src="./config.js"></script>
+  <script src="./consent.js"></script>
+  <script src="./analytics.js"></script>
+  <script src="./photos.js"></script>
+  <script src="./pricing-catalog.js"></script>
+  <script src="./resource-catalog.js"></script>
+  <script src="./content.js"></script>
+  <script src="./home-sections.js"></script>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div id="root"></div>
+<script type="text/babel">
+const DS = window.ProfesionistasBilingEsDesignSystem_30204a;
+const { Button, Card, Badge, Tag, Input, Select, Dialog, Motif, Divider } = DS;
+
+const CALENDLY_URL = 'https://calendly.com/palmlearning';
+const INTRO_VIDEO_EMBED = (window.PB_CONFIG && window.PB_CONFIG.welcomeVideoEmbed) || '';
+const STORY_VIDEO_EMBED = (window.PB_CONFIG && window.PB_CONFIG.storyVideoEmbed) || '';
+
+const INVERSE_BTN = {
+  primary: {
+    background: 'var(--color-white)',
+    color: 'var(--color-ink-navy)',
+    border: '1px solid transparent',
+    boxShadow: 'none',
+  },
+  secondary: { background: 'transparent', color: '#fff', border: '1.5px solid rgba(255,255,255,0.7)' },
+};
+
+const LIGHT_BTN = {
+  primary: {
+    background: 'var(--color-bridge-blue)',
+    color: 'var(--color-white)',
+    border: '1px solid transparent',
+    boxShadow: 'none',
+  },
+  secondary: {
+    background: 'var(--color-white)',
+    color: 'var(--color-ink-navy)',
+    border: '1.5px solid var(--color-ink-navy)',
+    boxShadow: 'none',
+  },
+};
+
+function SiteButton({ variant = 'primary', size = 'md', inverse = false, style, className, ...props }) {
+  let resolved = variant;
+  if (variant === 'accent' || variant === 'ghost') resolved = variant === 'ghost' ? 'secondary' : 'primary';
+
+  const tone = inverse
+    ? (INVERSE_BTN[resolved] || INVERSE_BTN.primary)
+    : (LIGHT_BTN[resolved] || {});
+
+  const btn = (
+    <Button
+      variant={resolved}
+      size={size}
+      style={{ boxShadow: 'none', ...tone, ...style }}
+      {...props}
+    />
+  );
+
+  if (className) {
+    return <span className={className} style={{ display: 'inline-flex' }}>{btn}</span>;
+  }
+  return btn;
+}
+
+function NavLink({ active, onClick, children }) {
+  return (
+    <button
+      type="button"
+      className={`nav-link${active ? ' nav-link--active' : ''}`}
+      onClick={onClick}
+      aria-current={active ? 'page' : undefined}
+    >
+      {children}
+    </button>
+  );
+}
+
+function FooterLink({ onClick, children }) {
+  return (
+    <button type="button" className="footer-link" onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
+function SocialIcon({ platform, size = 20 }) {
+  const common = {
+    width: size,
+    height: size,
+    viewBox: '0 0 24 24',
+    fill: 'currentColor',
+    'aria-hidden': true,
+  };
+
+  if (platform === 'youtube') {
+    return (
+      <svg {...common}>
+        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8ZM9.6 15.6V8.4L15.8 12 9.6 15.6Z" />
+      </svg>
+    );
+  }
+
+  if (platform === 'facebook') {
+    return (
+      <svg {...common}>
+        <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.413c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073Z" />
+      </svg>
+    );
+  }
+
+  if (platform === 'instagram') {
+    return (
+      <svg {...common}>
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.974.974 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.974-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.974-.974-1.246-2.242-1.308-3.608C2.175 15.747 2.163 15.367 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608.974-.974 2.242-1.246 3.608-1.308C8.416 2.175 8.796 2.163 12 2.163ZM12 0C8.741 0 8.333.014 7.053.072 5.775.13 4.602.428 3.635 1.395 2.668 2.362 2.37 3.535 2.312 4.813 2.254 6.093 2.24 6.501 2.24 12c0 5.499.014 5.907.072 7.187.058 1.278.356 2.451 1.323 3.418.967.967 2.14 1.265 3.418 1.323 1.28.058 1.688.072 7.187.072s5.907-.014 7.187-.072c1.278-.058 2.451-.356 3.418-1.323.967-.967 1.265-2.14 1.323-3.418.058-1.28.072-1.688.072-7.187s-.014-5.907-.072-7.187c-.058-1.278-.356-2.451-1.323-3.418C21.451.428 20.278.13 19 .072 17.72.014 17.312 0 12 0Zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881Z" />
+      </svg>
+    );
+  }
+
+  return null;
+}
+
+function SocialLinks({ items }) {
+  return (
+    <div className="social-links social-links--icons">
+      {(items || []).map(item => (
+        <a
+          key={item.id || item.url}
+          href={item.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={item.label || item.name}
+        >
+          <SocialIcon platform={item.id} />
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function LangSwitch({ lang, setLang, a11y, variant = 'pill' }) {
+  const isText = variant === 'text';
+  return (
+    <div
+      className={`lang-toggle${isText ? ' lang-toggle--text' : ' lang-toggle--pill'}`}
+      role="group"
+      aria-label={a11y.language}
+    >
+      <button
+        type="button"
+        className={lang === 'en' ? 'active' : ''}
+        aria-pressed={lang === 'en'}
+        aria-label={a11y.langEn}
+        onClick={() => setLang('en')}
+      >
+        EN
+      </button>
+      {isText && <span className="lang-toggle__sep" aria-hidden="true">|</span>}
+      <button
+        type="button"
+        className={lang === 'es' ? 'active' : ''}
+        aria-pressed={lang === 'es'}
+        aria-label={a11y.langEs}
+        onClick={() => setLang('es')}
+      >
+        ES
+      </button>
+    </div>
+  );
+}
+
+const FEATURE_ICON_PATHS = {
+  search: ['M21 21l-4.3-4.3', 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z'],
+  clipboard: ['M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2', 'M15 2H9a1 1 0 0 0-1 1v2h8V3a1 1 0 0 0-1-1Z', 'M9 12h6', 'M9 16h6'],
+  award: ['M12 15a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z', 'M8.21 13.89 7 23l5-3 5 3-1.21-9.12'],
+  briefcase: ['M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16', 'M2 20h20', 'M14 12h.01'],
+  'trending-up': ['M16 7h6v6', 'M22 7l-8.5 8.5-5-5L2 17'],
+  target: ['M12 2v4', 'M12 18v4', 'M4.93 4.93l2.83 2.83', 'M16.24 16.24l2.83 2.83', 'M2 12h4', 'M18 12h4', 'M4.93 19.07l2.83-2.83', 'M16.24 7.76l2.83-2.83', 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z'],
+  gear: ['M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z', 'M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z'],
+  chip: ['M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18'],
+  factory: ['M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z', 'M12 12v.01', 'M12 16v.01', 'M16 12v.01', 'M16 16v.01'],
+  health: ['M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z'],
+  users: ['M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2', 'M16 3.128a4 4 0 0 1 0 7.744', 'M22 21v-2a4 4 0 0 0-3-3.87', 'M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z'],
+  chart: ['M3 3v18h18', 'M18 17V9', 'M13 17V5', 'M8 17v-3'],
+  megaphone: ['M11 6a3 3 0 0 0 0 6', 'M11 6 18 3v18l-7-3', 'M6 9H4a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h2', 'M7 18v2'],
+  finance: ['M12 2v20', 'M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'],
+  scale: ['M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z', 'M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z', 'M7 21h10', 'M12 3v18', 'M3 7h2', 'M19 7h2'],
+  building: ['M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18', 'M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2', 'M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2', 'M10 6h4', 'M10 10h4', 'M10 14h4', 'M10 18h4'],
+  book: ['M4 19.5A2.5 2.5 0 0 1 6.5 17H20', 'M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z'],
+  plus: ['M5 12h14', 'M12 5v14'],
+  presentation: ['M2 3h20', 'M8 3v4', 'M16 3v4', 'M4 11h16', 'M8 15h.01', 'M12 15h.01', 'M16 15h.01', 'M8 19h.01', 'M12 19h.01', 'M16 19h.01'],
+  message: ['M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z'],
+  handshake: ['M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14', 'M7 18h1.5a1 1 0 0 0 0-2H5.5a1 1 0 0 0 0 2H7Z', 'M16 12h2', 'M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8'],
+  mic: ['M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z', 'M19 10v2a7 7 0 0 1-14 0v-2', 'M12 19v3'],
+  network: ['M12 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z', 'M6 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z', 'M18 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z', 'M8.59 13.51l6.83 3.98', 'M15.41 6.51l-6.82 3.98'],
+  lightbulb: ['M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5', 'M9 18h6', 'M10 22h4'],
+  globe: ['M21 12a9 9 0 1 1-9-9', 'M3.6 9h16.8', 'M3.6 15h16.8', 'M12 3c2.2 2.4 3.5 5.1 3.5 9s-1.3 6.6-3.5 9c-2.2-2.4-3.5-5.1-3.5-9s1.3-6.6 3.5-9Z'],
+  spark: ['M12 3v3', 'M12 18v3', 'M3 12h3', 'M18 12h3', 'M5.6 5.6l2.1 2.1', 'M16.3 16.3l2.1 2.1', 'M5.6 18.4l2.1-2.1', 'M16.3 7.7l2.1-2.1', 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z'],
+  practice: ['M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z'],
+  ear: ['M6 8.5a6 6 0 1 1 12 0c0 1.5-.5 3-1.5 4.2L15 17H9l-1.5-4.3A6 6 0 0 1 6 8.5Z', 'M9 17v1a3 3 0 0 0 6 0v-1'],
+  pen: ['M12 20h9', 'M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z'],
+  read: ['M4 19.5A2.5 2.5 0 0 1 6.5 17H20', 'M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z', 'M8 7h8', 'M8 11h6'],
+  language: ['M5 8l6 6', 'M4 14l6-6 2-3', 'M2 5h12', 'M7 2h1', 'M22 22l-5-10-5 10', 'M14 18h6'],
+};
+
+const INDUSTRY_ICON_KEYS = [
+  ['Engineering', 'Ingeniería', 'gear'],
+  ['Technology', 'Tecnología', 'chip'],
+  ['Manufacturing', 'Manufactura', 'factory'],
+  ['Healthcare', 'Salud', 'health'],
+  ['Human Resources', 'Recursos Humanos', 'users'],
+  ['Sales', 'Ventas', 'chart'],
+  ['Marketing', 'marketing', 'megaphone'],
+  ['Finance', 'Finanzas', 'finance'],
+  ['Law', 'Derecho', 'scale'],
+  ['Architecture', 'Arquitectura', 'building'],
+  ['Education', 'Educación', 'book'],
+  ['many more', 'industrias más', 'plus'],
+];
+
+const SCENARIO_ICON_KEYS = [
+  ['Present', 'presentacion', 'presentation'],
+  ['Meeting', 'Reunion', 'users'],
+  ['Client', 'cliente', 'message'],
+  ['Negotiat', 'Negoci', 'handshake'],
+  ['Interview', 'Entrevist', 'mic'],
+  ['Network', 'network', 'network'],
+  ['Problem', 'problema', 'lightbulb'],
+  ['Intercultural', 'intercultural', 'globe'],
+  ['AI', 'Inteligencia', 'spark'],
+];
+
+const COMPETENCY_ICON_KEYS = [
+  ['Speaking', 'speak', 'mic'],
+  ['Listening', 'listen', 'ear'],
+  ['Pronunciation', 'pronun', 'language'],
+  ['Grammar', 'grammar', 'read'],
+  ['Vocabulary', 'vocab', 'book'],
+  ['Reading', 'reading', 'read'],
+  ['Writing', 'writing', 'pen'],
+  ['Elevator', 'elevator', 'presentation'],
+  ['Present', 'presentacion', 'presentation'],
+  ['Meeting', 'Reunion', 'users'],
+  ['Prompt', 'prompt', 'spark'],
+];
+
+function iconForLabel(label, map) {
+  const lower = label.toLowerCase();
+  for (const keys of map) {
+    const icon = keys[keys.length - 1];
+    for (let i = 0; i < keys.length - 1; i += 1) {
+      if (lower.includes(keys[i].toLowerCase())) return icon;
+    }
+  }
+  return 'spark';
+}
+
+function FeatureIcon({ name, size = 22 }) {
+  const paths = FEATURE_ICON_PATHS[name] || FEATURE_ICON_PATHS.spark;
+  return (
+    <svg className="feature-icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {paths.map((d, i) => <path key={i} d={d} />)}
+    </svg>
+  );
+}
+
+function IconTile({ icon, label, accent = 'blue' }) {
+  return (
+    <div className={`icon-tile icon-tile--${accent}`}>
+      <span className="icon-tile__glyph"><FeatureIcon name={icon} size={20} /></span>
+      <span className="icon-tile__label">{label}</span>
+    </div>
+  );
+}
+
+function CompetencyChip({ icon, label, accent = 'blue' }) {
+  return (
+    <span className={`competency-chip competency-chip--${accent}`}>
+      <FeatureIcon name={icon} size={16} />
+      {label}
+    </span>
+  );
+}
+
+function JourneyTimeline({ steps }) {
+  const items = steps || [];
+  return (
+    <ol className="journey-timeline">
+      {items.map((step, index) => {
+        const isLast = index === items.length - 1;
+        const classes = [
+          'journey-timeline__step',
+          step.milestone && 'journey-timeline__step--milestone',
+          step.outcome && 'journey-timeline__step--outcome',
+          isLast && 'journey-timeline__step--last',
+        ].filter(Boolean).join(' ');
+        return (
+          <li key={step.num} className={classes}>
+            <div className="journey-timeline__track" aria-hidden="true">
+              {!isLast && <span className="journey-timeline__line" />}
+              <span className="journey-timeline__node">
+                <FeatureIcon name={step.icon || 'spark'} size={22} />
+                {step.milestone && <span className="journey-timeline__milestone-dot" />}
+              </span>
+              {step.outcome && (
+                <span className="journey-timeline__beyond">
+                  <FeatureIcon name="trending-up" size={18} />
+                </span>
+              )}
+            </div>
+            <div className="journey-timeline__body">
+              <span className="journey-timeline__num">{step.num}</span>
+              <h4>{step.title}</h4>
+              <p>{step.desc}</p>
+            </div>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+function pricingProduct(id) {
+  return window.PB_PRICING_HELPERS && window.PB_PRICING_HELPERS.product(id);
+}
+
+function isPurchasable(id) {
+  return window.PB_PRICING_HELPERS && window.PB_PRICING_HELPERS.isPurchasable(id);
+}
+
+function canBuyNow(id) {
+  return window.PB_PRICING_HELPERS && window.PB_PRICING_HELPERS.canBuyNow(id);
+}
+
+function planCtaLabel(id, t) {
+  if (canBuyNow(id)) return t.pricing.buyNowCta;
+  if (isPurchasable(id)) return t.pricing.enrollCta;
+  return t.pricing.contactCta;
+}
+
+function getSiteLang() {
+  const parsed = window.PB_ROUTER && window.PB_ROUTER.parseHash && window.PB_ROUTER.parseHash();
+  return (parsed && parsed.lang) || localStorage.getItem('pb-lang') || 'es';
+}
+
+function handleProgramAction(id, setView, source, lang) {
+  if (isPurchasable(id)) {
+    purchaseProgram(id, setView, source, lang);
+    return;
+  }
+  goToSection('contact', setView);
+}
+
+function purchaseProgram(id, setView, source, lang) {
+  if (window.PB_ANALYTICS) window.PB_ANALYTICS.programView(id, source || 'unknown');
+  if (!isPurchasable(id)) {
+    goToSection('contact', setView);
+    return;
+  }
+  sessionStorage.setItem('pb-checkout-program', id);
+  if (window.PB_ANALYTICS) window.PB_ANALYTICS.checkoutStart(id);
+  if (payWithStripe(id)) return;
+  const product = pricingProduct(id);
+  if (product) checkoutMailto({ ...product, id }, lang || getSiteLang());
+}
+
+function checkoutMailto(product, lang) {
+  const name = product.name[lang] || product.name.en;
+  const price = window.PB_PRICING_HELPERS.displayPrice(product.id || sessionStorage.getItem('pb-checkout-program'), lang);
+  const subject = encodeURIComponent(`Enrollment — ${name}`);
+  const body = encodeURIComponent(
+    `Hi Teresa,\n\nI would like to enroll in: ${name}\n${price ? `Price: ${price}\n` : ''}\nName:\nEmail:\n\nThank you.`
+  );
+  window.location.href = `mailto:teresa@palmlearning.com?subject=${subject}&body=${body}`;
+}
+
+function payWithStripe(id) {
+  const link = window.PB_PRICING_HELPERS && window.PB_PRICING_HELPERS.getStripeLink(id);
+  if (!link) return false;
+  window.location.href = link;
+  return true;
+}
+
+function useContent(lang) {
+  const base = window.SITE_CONTENT[lang] || window.SITE_CONTENT.en;
+  const sections = (window.HOME_SECTIONS && window.HOME_SECTIONS[lang]) || window.HOME_SECTIONS.en;
+  return {
+    ...base,
+    home: { ...base.home, ...sections },
+  };
+}
+
+function openDiagnostic(source) {
+  if (window.PB_ANALYTICS) window.PB_ANALYTICS.diagnosticClick(source);
+  window.open(CALENDLY_URL, '_blank');
+}
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+const LANDING_SECTIONS = {
+  home: null,
+  programs: 'programs',
+  pricing: 'programs',
+  organizations: 'organizations',
+  about: 'about',
+  faq: 'faq',
+  diagnostico: 'diagnostico',
+  contact: 'contact',
+  quiz: 'programs',
+};
+
+function isLandingView(view) {
+  return Object.prototype.hasOwnProperty.call(LANDING_SECTIONS, view);
+}
+
+function sectionForView(view) {
+  return LANDING_SECTIONS[view];
+}
+
+function goToSection(sectionId, setView) {
+  if (sectionId === 'top') {
+    if (setView) setView('home', true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  if (setView) {
+    const viewKey = sectionId || 'home';
+    setView(Object.prototype.hasOwnProperty.call(LANDING_SECTIONS, viewKey) ? viewKey : 'home', true);
+  } else {
+    scrollToSection(sectionId);
+  }
+}
+
+function BrandLogo({ onClick, label }) {
+  return (
+    <button type="button" className="brand-logo" onClick={onClick} aria-label={label}>
+      <img className="brand-logo__mark" src="../assets/logo-mark.png" alt="" />
+      <span className="brand-logo__wordmark" aria-hidden="true">Profesionistas Bilingües</span>
+    </button>
+  );
+}
+
+function SectionLabel({ children, light, accent }) {
+  const dotColor = accent === 'yellow'
+    ? 'var(--color-fluent-yellow)'
+    : (light ? 'rgba(255,255,255,0.9)' : 'var(--color-progress-purple)');
+  return (
+    <div className="section-label" style={light ? { color: 'rgba(255,255,255,0.9)' } : undefined}>
+      <Motif variant="dot" color={dotColor} size={8} />
+      {children}
+    </div>
+  );
+}
+
+function reserveSeat(setView, source) {
+  if (window.PB_ANALYTICS) window.PB_ANALYTICS.checkoutStart('12-week', source || 'reserve');
+  if (canBuyNow('12-week')) {
+    purchaseProgram('12-week', setView, source || 'reserve');
+    return;
+  }
+  goToSection('programs', setView);
+}
+
+function NavBar({ view, setView, lang, setLang, t }) {
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const a11y = t.a11y || {};
+  const navItems = [
+    { key: 'programs', label: t.nav.programs, type: 'anchor' },
+    { key: 'organizations', label: t.nav.organizations, type: 'anchor' },
+    { key: 'resources', label: t.nav.resources, type: 'route' },
+    { key: 'about', label: t.nav.about, type: 'anchor' },
+    { key: 'faq', label: t.nav.faq, type: 'anchor' },
+  ];
+
+  const navGo = (item) => {
+    if (item.type === 'route') {
+      setView('resources');
+      window.scrollTo(0, 0);
+    } else {
+      const sectionId = LANDING_SECTIONS[item.key];
+      if (sectionId) {
+        setView('home', true);
+        requestAnimationFrame(() => setTimeout(() => scrollToSection(sectionId), 80));
+      } else {
+        setView(item.key, true);
+      }
+    }
+    setMobileOpen(false);
+  };
+
+  const goDiagnostic = () => {
+    setView('diagnostico', true);
+    setMobileOpen(false);
+  };
+
+  const goTop = () => {
+    setView('home', true);
+    setMobileOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const isActive = (key) => {
+    if (view === 'home') return false;
+    if (key === 'resources') return view === 'resources';
+    if (key === 'programs') return view === 'programs' || view === 'pricing';
+    return view === key;
+  };
+
+  return (
+    <header className={`site-header${mobileOpen ? ' nav-mobile-open' : ''}`}>
+      <div className="site-header__inner">
+        <BrandLogo onClick={goTop} label={a11y.homeLink} />
+
+        <nav className="site-header__nav" aria-label={a11y.mainNav}>
+          {navItems.map(item => (
+            <NavLink key={item.key} active={isActive(item.key)} onClick={() => navGo(item)}>{item.label}</NavLink>
+          ))}
+        </nav>
+
+        <div className="site-header__actions">
+          <LangSwitch lang={lang} setLang={setLang} a11y={a11y} />
+          <SiteButton variant="primary" size="sm" className="nav-diagnostic-cta" onClick={goDiagnostic}>
+            <span className="nav-diagnostic-cta__full">{t.nav.bookDiagnostic}</span>
+            <span className="nav-diagnostic-cta__short" aria-hidden="true">{t.nav.bookDiagnosticShort || t.nav.bookDiagnostic}</span>
+          </SiteButton>
+          <button
+            type="button"
+            className="mobile-nav-toggle"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
+            aria-label={mobileOpen ? (a11y.closeMenu || 'Close menu') : (a11y.openMenu || 'Open menu')}
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <span className="mobile-nav-toggle__icon" aria-hidden="true">{mobileOpen ? '✕' : '☰'}</span>
+          </button>
+        </div>
+
+        {mobileOpen && (
+          <nav id="mobile-nav" className="site-header__nav-mobile" aria-label={a11y.mobileNav}>
+            {navItems.map(item => (
+              <NavLink key={`m-${item.key}`} active={isActive(item.key)} onClick={() => navGo(item)}>{item.label}</NavLink>
+            ))}
+            <div className="site-header__nav-mobile-cta">
+              <SiteButton variant="primary" size="md" style={{ width: '100%' }} onClick={goDiagnostic}>
+                {t.nav.bookDiagnostic}
+              </SiteButton>
+            </div>
+          </nav>
+        )}
+      </div>
+    </header>
+  );
+}
+
+function NewsletterSignup({ f }) {
+  const [sent, setSent] = React.useState(false);
+  const [error, setError] = React.useState('');
+  const [submitting, setSubmitting] = React.useState(false);
+  const formspreeId = window.PB_CONFIG && window.PB_CONFIG.formspreeId;
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setError('');
+    const form = e.target;
+    const fd = new FormData(form);
+    const email = fd.get('email');
+
+    if (!formspreeId) {
+      window.location.href = `mailto:teresa@palmlearning.com?subject=${encodeURIComponent('Newsletter signup')}&body=${encodeURIComponent(`Please add me to the newsletter: ${email}`)}`;
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
+        method: 'POST',
+        body: fd,
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) setSent(true);
+      else setError(f.newsletterError);
+    } catch (err) {
+      setError(f.newsletterError);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="footer-newsletter">
+      <h4>{f.newsletterTitle}</h4>
+      <p>{f.newsletterDesc}</p>
+      {sent ? (
+        <p className="footer-newsletter__success">{f.newsletterSuccess}</p>
+      ) : (
+        <form onSubmit={submit} className="footer-newsletter__form">
+          <input type="hidden" name="_subject" value="Newsletter signup — Profesionistas Bilingües" />
+          <input type="hidden" name="form_type" value="newsletter" />
+          <input name="email" type="email" required placeholder={f.newsletterPlaceholder} aria-label={f.newsletterPlaceholder} />
+          <button type="submit" disabled={submitting}>{submitting ? f.newsletterSending : f.newsletterSubmit}</button>
+          {error && <p className="footer-newsletter__error">{error}</p>}
+        </form>
+      )}
+    </div>
+  );
+}
+
+function Footer({ setView, lang, setLang, t }) {
+  const f = t.footer;
+  const a11y = t.a11y || {};
+  const goSection = (section) => setView(section, true);
+  const goLegal = (v) => { setView(v); window.scrollTo(0, 0); };
+
+  const footerCols = [
+    { title: f.colPrograms, links: f.colProgramsLinks, action: () => goSection('programs') },
+    {
+      title: f.colResources,
+      links: f.colResourcesLinks,
+      actions: [
+        () => setView('resources'),
+        () => goSection('faq'),
+        () => goLegal('terms'),
+        () => setView('contact'),
+      ],
+    },
+    {
+      title: f.colCompany,
+      links: f.colCompanyLinks,
+      actions: [
+        () => setView('about'),
+        () => goSection('programs'),
+        () => goLegal('privacy'),
+        () => goLegal('terms'),
+      ],
+    },
+  ];
+
+  return (
+    <footer className="site-footer">
+      <div className="site-footer__grid">
+        <div className="site-footer__brand">
+          <BrandLogo onClick={() => { setView('home', true); window.scrollTo({ top: 0, behavior: 'smooth' }); }} label={a11y.homeLink} />
+          <p className="site-footer__tagline">{f.tagline}</p>
+          <p className="site-footer__desc">{f.brandDesc}</p>
+          <p className="site-footer__email"><a href={`mailto:${f.email}`}>{f.email}</a></p>
+          <SocialLinks items={t.social.items} />
+        </div>
+        {footerCols.map(col => (
+          <nav key={col.title} className="footer-col" aria-label={col.title}>
+            <h4>{col.title}</h4>
+            {col.links.map((link, i) => (
+              <FooterLink key={link} onClick={col.actions ? col.actions[i] : col.action}>{link}</FooterLink>
+            ))}
+          </nav>
+        ))}
+      </div>
+      <div className="site-footer__bottom">
+        <p>{f.copyright}</p>
+        <div className="site-footer__bottom-links">
+          <FooterLink onClick={() => goLegal('privacy')}>{f.privacy}</FooterLink>
+          <FooterLink onClick={() => goLegal('terms')}>{f.terms}</FooterLink>
+          <LangSwitch lang={lang} setLang={setLang} a11y={a11y} variant="pill" />
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function PhotoRingFrame({ photoKey, alt, size = 'hero' }) {
+  return (
+    <div className={`photo-ring-frame photo-ring-frame--${size}`}>
+      <div className="photo-ring-frame__rings" aria-hidden="true">
+        <span className="photo-ring-frame__ring photo-ring-frame__ring--1" />
+        <span className="photo-ring-frame__ring photo-ring-frame__ring--2" />
+        <span className="photo-ring-frame__ring photo-ring-frame__ring--3" />
+      </div>
+      <div className="photo-ring-frame__photo">
+        <SitePhoto photoKey={photoKey} alt={alt || ''} showCredit={false} />
+      </div>
+    </div>
+  );
+}
+
+function ContentPendingBanner({ h }) {
+  if (!h.contentPendingNote) return null;
+  return (
+    <div className="content-pending-banner" role="note">
+      <div className="container">
+        <p>{h.contentPendingNote}</p>
+      </div>
+    </div>
+  );
+}
+
+function CheckList({ items, checkLabel }) {
+  return (
+    <ul className="check-list">
+      {items.map(item => (
+        <li key={item}>
+          <span className="sr-only">{checkLabel}: </span>
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function SitePhoto({ photoKey, alt, className, showCredit }) {
+  const photo = window.SITE_PHOTOS && window.SITE_PHOTOS[photoKey];
+  if (!photo) return <image-slot shape="rounded" radius="12" placeholder={alt || ''}></image-slot>;
+  const displayCredit = showCredit === true || (showCredit !== false && photo.credit && !photo.aiGenerated);
+  return (
+    <figure className={`site-photo${className ? ' ' + className : ''}`}>
+      <img src={photo.src} alt={alt || ''} loading="lazy" />
+      {displayCredit && (
+        <figcaption>
+          {photo.creditHref ? (
+            <a href={photo.creditHref} target="_blank" rel="noopener noreferrer">{photo.credit}</a>
+          ) : (
+            photo.credit
+          )}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
+function MetaLabel({ children, accent }) {
+  return (
+    <span className={`meta-label${accent ? ' meta-label--accent' : ''}`}>{children}</span>
+  );
+}
+
+function PartnerLogosBar({ h, a11y }) {
+  return <IndustryBar h={h} a11y={a11y} />;
+}
+
+function WelcomeVideoSection({ h, a11y }) {
+  const embed = INTRO_VIDEO_EMBED;
+  if (!embed) return null;
+  return (
+    <section id="intro" className="section section-page welcome-video-section">
+      <div className="container">
+        <div className="welcome-video__grid">
+          <div>
+            <SectionLabel>{h.welcomeLabel}</SectionLabel>
+            <h2 className="welcome-video__title">{h.welcomeTitle}</h2>
+            <p className="welcome-video__story">{h.welcomeBody}</p>
+          </div>
+          <div className="welcome-video__card">
+            <div className="video-embed-wrap welcome-video__embed">
+              <iframe src={embed} title={h.welcomeVideoLabel} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function IndustryBar({ h, a11y }) {
+  return (
+    <div className="industry-bar" role="region" aria-label={a11y?.industryList || h.trustIndustriesLabel}>
+      <div className="industry-bar__inner container">
+        <span className="industry-bar__label">{h.trustIndustriesLabel}</span>
+        <ul className="industry-bar__list">
+          {h.trustIndustries.map(ind => (
+            <li key={ind}>{ind}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function MissionSection({ h }) {
+  return (
+    <section className="mission-section">
+      <div className="container">
+        <div className="mission-grid">
+          <div className="mission-quote">
+            <span className="mission-label">{h.missionLabel}</span>
+            <h2>{h.missionTitle}</h2>
+            <p className="mission-text">{h.missionText}</p>
+          </div>
+          <div className="mission-support">
+            <p>{h.missionSupport}</p>
+            <p className="mission-footer">{h.missionFooter}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProgramBannerSection({ h }) {
+  return (
+    <section className="program-banner-section">
+      <div className="container">
+        <div className="program-banner-card">
+          <h2>{h.programBannerTitle}</h2>
+          <p>{h.programBannerDesc}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ApproachSection({ h, a11y }) {
+  return (
+    <section id="method" className="section section-page approach-section">
+      <div className="approach-section__shape" aria-hidden="true">
+        <Motif variant="blob" color="var(--color-progress-purple)" size={200} style={{ opacity: 0.12 }} />
+      </div>
+      <div className="container section-content">
+        <SectionLabel>{h.approachLabel}</SectionLabel>
+
+        <div className="approach-intro">
+          <h2>{h.whatIsTitle}</h2>
+          <p className="approach-section__lead">{h.whatIsLead}</p>
+          <div className="what-is-card">
+            <h3>{h.whatIsCardTitle}</h3>
+            <CheckList items={h.whatIsItems} checkLabel={a11y?.included || 'Included'} />
+          </div>
+        </div>
+
+        <div className="approach-journey">
+          <h3 className="approach-journey__title">{h.journeyTitle}</h3>
+          <JourneyTimeline steps={h.journeySteps} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SuccessStoriesSection({ h, a11y }) {
+  const embed = STORY_VIDEO_EMBED;
+  return (
+    <section id="success-stories" className="section section-white stories-section">
+      <div className="container">
+        <SectionLabel>{h.successLabel}</SectionLabel>
+        <h2 className="text-center-block">{h.successTitle}</h2>
+
+        {embed && (
+          <div className="success-stories__featured">
+            <h3>{h.promoVideoTitle}</h3>
+            <p className="success-stories__video-intro">{h.promoVideoSubtitle}</p>
+            <div className="video-embed-wrap video-embed-wrap--flat">
+              <iframe src={embed} title={h.promoVideoTitle} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+            </div>
+          </div>
+        )}
+
+        <div className="story-grid story-grid--figma">
+          {h.successStories.map(story => (
+            <Card key={story.name} className="story-card story-card--figma">
+              <p className="story-card__role">{story.role}</p>
+              <blockquote className="story-card__quote">{story.quote}</blockquote>
+              <p className="story-card__outcome"><strong>{story.name} —</strong> {story.outcome}</p>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CertificationHomeSection({ h, setView, a11y }) {
+  const active = new Set(h.certActiveLevels || []);
+  return (
+    <section id="certification" className="section cert-section--dark">
+      <div className="container">
+        <div className="cert-section__grid">
+          <div>
+            <SectionLabel light accent="yellow">{h.certSectionLabel}</SectionLabel>
+            <h2>{h.certSectionTitle}</h2>
+            <p className="cert-section__body">{h.certSectionBody}</p>
+            <ul className="cefr-pills" aria-label={a11y?.cefrLevels || 'CEFR levels'}>
+              {(h.certLevels || []).map(level => (
+                <li key={level} className={`cefr-pill${active.has(level) ? ' cefr-pill--active' : ''}`}>{level}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="cert-section__methodology">
+            <h3>{h.certMethodologyTitle}</h3>
+            <ul className="cert-methodology-list">
+              {(h.methodologyItems || []).map(item => <li key={item}>{item}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FinalCTASection({ h }) {
+  return (
+    <section id="diagnostico" className="final-reserve-cta final-cta-band">
+      <div className="container content-narrow section-content">
+        <SectionLabel light accent="yellow">{h.finalCtaLabel}</SectionLabel>
+        <h2>{h.finalCtaTitle}</h2>
+        <p className="final-cta-band__p">{h.finalCtaBody}</p>
+        <p className="final-cta-band__closing">{h.finalCtaClosing}</p>
+        <div className="final-cta-band__buttons cta-row cta-row--center">
+          <SiteButton variant="primary" size="lg" inverse onClick={() => openDiagnostic('final-cta')}>{h.ctaAssessment}</SiteButton>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function formatPrice(prog, h, lang) {
+  const catalog = pricingProduct(prog.id);
+  if (catalog && typeof catalog.display === 'string') {
+    const period = catalog.period && (catalog.period[lang] || catalog.period.en);
+    return catalog.display + (period ? ' ' + period : '');
+  }
+  if (prog.price === 'Contact us' || prog.price === 'Contáctanos') return prog.price;
+  return (prog.pricePrefix ? h.priceFrom : '') + prog.price + (prog.period ? ' ' + prog.period : '');
+}
+
+function LandingPage({ setView, t, lang }) {
+  const h = t.home;
+  const a11y = t.a11y || {};
+
+  return (
+    <div style={{ fontFamily: 'var(--font-body)' }}>
+      <section id="top" className="hero-section hero-section--light hero-section--figma section-white">
+        <div className="hero-inner">
+          <div className="hero-copy">
+            {h.heroBadge && <span className="hero-cohort-pill">{h.heroBadge}</span>}
+            <div className="hero-headline-wrap">
+              <h1>{h.headline}</h1>
+              <div className="hero-headline-spark" aria-hidden="true">
+                <Motif variant="spark" color="var(--color-fluent-yellow)" size={36} />
+              </div>
+            </div>
+            <div className="hero-body-copy">
+              {(h.heroBody || []).map((para, i) => (
+                <p key={i} className={h.heroBodyBoldIndex === i ? 'hero-body-copy__bold' : ''}>{para}</p>
+              ))}
+            </div>
+            <div className="cta-row">
+              <SiteButton variant="primary" size="lg" onClick={() => goToSection('programs', setView)}>{h.ctaSeePrograms}</SiteButton>
+              <SiteButton variant="secondary" size="lg" onClick={() => openDiagnostic('hero')}>{h.ctaBookDiagnostic}</SiteButton>
+            </div>
+            {h.cohortPill && <p className="hero-fine-print">{h.cohortPill}</p>}
+          </div>
+          <div className="hero-media">
+            <PhotoRingFrame photoKey="hero" alt="" size="hero" />
+          </div>
+        </div>
+      </section>
+
+      <WelcomeVideoSection h={h} a11y={a11y} />
+      <ApproachSection h={h} a11y={a11y} />
+      <ProgramsPricingSection setView={setView} t={t} lang={lang} />
+      <OrganizationsSection setView={setView} t={t} />
+      <CertificationHomeSection h={h} setView={setView} a11y={a11y} />
+      <SuccessStoriesSection h={h} a11y={a11y} />
+      <AboutHomeSection t={t} />
+      <FAQSection t={t} setView={setView} />
+      <FinalCTASection h={h} />
+    </div>
+  );
+}
+
+function AboutHomeSection({ t }) {
+  const a = t.about;
+  return (
+    <section id="about" className="section section-page">
+      <div className="container">
+        <SectionLabel>{a.label || t.nav.about}</SectionLabel>
+        <h2 className="about-home__title">{a.title}</h2>
+        <p className="about-home__subtitle">{a.subtitle}</p>
+        <div className="about-grid">
+          <div>
+            <p className="about-intro">{a.intro}</p>
+            <Card className="about-mission-card">
+              <h3>{a.missionTitle}</h3>
+              <p>{a.missionDesc}</p>
+            </Card>
+            <h3 className="about-approach-title">{a.approachTitle}</h3>
+            <ul className="about-approach-list">
+              {a.approachItems.map(item => <li key={item}>{item}</li>)}
+            </ul>
+          </div>
+          <div className="about-photo-wrap">
+            <PhotoRingFrame photoKey="teresa" alt="Teresa — founder" size="about" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function OrganizationsSection({ setView, t }) {
+  const o = t.organizations;
+
+  return (
+    <section id="organizations" className="section section-page org-section">
+      <div className="container">
+        <SectionLabel>{o.label}</SectionLabel>
+
+        <div className="org-section__header">
+          <h2 className="org-section__title">{o.title}</h2>
+          <p className="org-section__lead">{o.subtitle}</p>
+        </div>
+
+        <div className="org-section__copy">
+          <p className="org-section__program">{o.programName}</p>
+          <ul className="org-section__focus">
+            {(o.focusAreas || []).map(item => (
+              <li key={item.title}>
+                <strong>{item.title}</strong>
+                <span>{item.desc}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="org-section__cta cta-row">
+          <SiteButton variant="primary" onClick={() => goToSection('contact', setView)}>{o.ctaContact}</SiteButton>
+          <SiteButton variant="secondary" onClick={() => openDiagnostic('organizations')}>{o.ctaDiagnostic}</SiteButton>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProgramsPricingSection({ setView, t, lang }) {
+  const p = t.programs;
+  const h = t.home;
+  const cards = h.programCards || [];
+
+  return (
+    <section id="programs" className="section section-white programs-figma">
+      <div className="programs-figma__shape" aria-hidden="true">
+        <Motif variant="blob" color="var(--color-bridge-blue)" size={220} style={{ opacity: 0.08 }} />
+      </div>
+      <div className="container section-content">
+        <div className="section-header programs-section-header">
+          <h2>{h.programsSectionTitle || p.title}</h2>
+          <p>{h.programsSectionSubtitle || p.subtitle}</p>
+          {h.contentPendingNote && <p className="content-pending-inline">{h.contentPendingNote}</p>}
+        </div>
+
+        <div className="program-cards program-cards--figma">
+          {cards.map(card => {
+            const price = window.PB_PRICING_HELPERS.displayPrice(card.id, lang);
+            return (
+              <div key={card.id} className={`program-card-figma${card.featured ? ' program-card-figma--featured' : ''}`}>
+                {card.featured && card.popularBadge && (
+                  <div className="program-card-figma__badge">{card.popularBadge}</div>
+                )}
+                <p className="program-card-figma__duration">{card.duration}</p>
+                <h3>{card.name}</h3>
+                <p className="program-card-figma__tagline">{card.tagline}</p>
+                <ul className="program-card-figma__features">
+                  {card.features.map(f => <li key={f}>{f}</li>)}
+                </ul>
+                <div className="program-card-figma__price">
+                  {price || (card.contactPricing ? (lang === 'es' ? 'Contáctanos' : 'Contact us') : '')}
+                </div>
+                <SiteButton
+                  variant={card.featured ? 'primary' : 'secondary'}
+                  style={{ width: '100%' }}
+                  onClick={() => handleProgramAction(card.id, setView, 'programs', lang)}
+                >
+                  {planCtaLabel(card.id, t)}
+                </SiteButton>
+              </div>
+            );
+          })}
+        </div>
+
+        {h.programsGuarantee && (
+          <p className="programs-guarantee">{h.programsGuarantee}</p>
+        )}
+
+        <div className="cert-only-banner">
+          <div>
+            <h3>{h.certBannerTitle || p.certStandalone.name}</h3>
+            <p>{h.certBannerDesc || p.certStandalone.desc}</p>
+          </div>
+          <div className="cert-only-banner__cta">
+            <div className="cert-only-banner__price">
+              <span>{h.certBannerPrice || p.certStandalone.price}</span>
+              {h.certBannerPriceNote && <small>{h.certBannerPriceNote}</small>}
+            </div>
+            <SiteButton variant="secondary" size="sm"
+              onClick={() => handleProgramAction('cert-only', setView, 'programs', lang)}>
+              {planCtaLabel('cert-only', t)}
+            </SiteButton>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+function FAQSection({ t, setView }) {
+  const f = t.faq;
+  const [open, setOpen] = React.useState(() => new Set());
+
+  const toggle = (key) => {
+    setOpen(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  const goResources = () => {
+    setView('resources');
+    window.scrollTo(0, 0);
+  };
+
+  return (
+    <section id="faq" className="section section-white">
+      <div className="container">
+        <div className="section-header">
+          <h2>{f.title}</h2>
+        </div>
+        <div className="faq-list">
+          {f.items.map((item, i) => {
+            const key = item.q;
+            const isOpen = open.has(key);
+            const panelId = 'faq-panel-' + i;
+            const triggerId = 'faq-trigger-' + i;
+            return (
+              <div key={key} className={`faq-item${isOpen ? ' faq-item--open' : ''}`}>
+                <button
+                  type="button"
+                  id={triggerId}
+                  className="faq-item__trigger"
+                  onClick={() => toggle(key)}
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                >
+                  <span className="faq-item__question">{item.q}</span>
+                  <span className="faq-item__icon" aria-hidden="true">{isOpen ? '−' : '+'}</span>
+                </button>
+                <div id={panelId} className="faq-item__panel" role="region" aria-labelledby={triggerId}>
+                  <div className="faq-item__panel-inner">
+                    <p>{item.a}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {f.resourcesTeaser && (
+          <div className="faq-resources-teaser">
+            <p>{f.resourcesTeaser}</p>
+            <SiteButton variant="secondary" onClick={goResources}>{f.resourcesLink}</SiteButton>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function ContactPage({ t }) {
+  return (
+    <div style={{ fontFamily: 'var(--font-body)' }}>
+      <ContactSection t={t} />
+    </div>
+  );
+}
+
+function ContactSection({ t }) {
+  const c = t.contact;
+  const [sent, setSent] = React.useState(false);
+  const [error, setError] = React.useState('');
+  const [submitting, setSubmitting] = React.useState(false);
+  const formspreeId = window.PB_CONFIG && window.PB_CONFIG.formspreeId;
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setError('');
+    const form = e.target;
+    const fd = new FormData(form);
+
+    if (!formspreeId) {
+      const mailto = `mailto:${c.directEmail}?subject=${encodeURIComponent('Contact — Profesionistas Bilingües')}&body=${encodeURIComponent(
+        `Name: ${fd.get('name')}\nEmail: ${fd.get('email')}\n\n${fd.get('comment')}`
+      )}`;
+      window.location.href = mailto;
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
+        method: 'POST',
+        body: fd,
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) setSent(true);
+      else setError(c.formError || 'Something went wrong. Please email us directly.');
+    } catch (err) {
+      setError(c.formError || 'Something went wrong. Please email us directly.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <section id="contact" className="section section-white contact-section">
+      <div className="container">
+        <div className="contact-section__header">
+          <SectionLabel>{c.label}</SectionLabel>
+          <h2>{c.title}</h2>
+          <p>{c.subtitle}</p>
+        </div>
+        <div className="contact-form-wrap">
+          {sent ? (
+            <p className="contact-form__success">{c.formSuccess}</p>
+          ) : (
+            <form className="contact-form" onSubmit={submit}>
+              <label className="contact-form__field">
+                <span className="contact-form__label">{c.formName}</span>
+                <input name="name" required placeholder={c.formNamePlaceholder} />
+              </label>
+              <label className="contact-form__field">
+                <span className="contact-form__label">{c.formEmail}</span>
+                <input name="email" type="email" required placeholder={c.formEmailPlaceholder} />
+              </label>
+              <label className="contact-form__field">
+                <span className="contact-form__label">{c.formComment}</span>
+                <textarea name="comment" required rows={5} placeholder={c.formCommentPlaceholder} />
+              </label>
+              {error && <p className="contact-form__error">{error}</p>}
+              <SiteButton variant="primary" type="submit" disabled={submitting} style={{ width: '100%' }}>
+                {submitting ? c.formSending : c.formSubmit}
+              </SiteButton>
+            </form>
+          )}
+          <p className="contact-direct">
+            {c.directLine}{' '}
+            <a href={`mailto:${c.directEmail}`}>{c.directEmail}</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function LegalPage({ t, pageKey }) {
+  const page = t[pageKey];
+  return (
+    <div style={{ fontFamily: 'var(--font-body)' }}>
+      <div className="page-header">
+        <h1>{page.title}</h1>
+        <p style={{ fontSize: 'var(--text-sm)' }}>{page.updated}</p>
+      </div>
+      <div className="legal-content">
+        {page.sections.map(s => (
+          <div key={s.heading}>
+            <h2>{s.heading}</h2>
+            <p>{s.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ResourcesPage({ setView, t, lang }) {
+  const r = t.resources;
+  const catalog = window.RESOURCE_CATALOG || {};
+
+  return (
+    <div style={{ fontFamily: 'var(--font-body)' }}>
+      <div className="page-hero-band page-hero-band--compact">
+        <SectionLabel light>{r.title}</SectionLabel>
+        <h1>{r.title}</h1>
+        <p>{r.subtitle}</p>
+      </div>
+      <div className="container section">
+        <p className="resource-page-intro">{r.intro}</p>
+        <div className="resource-grid">
+          {r.categories.map(cat => {
+            const meta = catalog[cat.id] || {};
+            const primaryLink = cat.links && cat.links[0];
+            const imageAlt = (meta.imageAlt && (meta.imageAlt[lang] || meta.imageAlt.en)) || cat.name;
+            return (
+              <Card key={cat.id} className="resource-card" padding="0" style={{ overflow: 'hidden' }} id={`resource-${cat.id}`}>
+                {meta.image && (
+                  <div className="resource-card__media">
+                    <img src={meta.image} alt={imageAlt} loading="lazy" decoding="async" />
+                    {meta.icon && (
+                      <span className="resource-card__media-icon" aria-hidden="true">
+                        <FeatureIcon name={meta.icon} size={22} />
+                      </span>
+                    )}
+                  </div>
+                )}
+                <div className="resource-card__content">
+                  <MetaLabel accent>{cat.name}</MetaLabel>
+                  <p className="resource-card__desc">{cat.desc}</p>
+                  <div className="resource-card__lesson">
+                    <span className="resource-card__lesson-label">{r.guideLabel}</span>
+                    <p>{cat.lesson}</p>
+                  </div>
+                  {primaryLink && (
+                    <a
+                      className="resource-card__cta"
+                      href={primaryLink.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {r.cardCta}
+                    </a>
+                  )}
+                  <div className="resource-card__links">
+                    <span className="resource-card__links-label">{r.linksLabel}</span>
+                    <ul>
+                      {cat.links.map(link => (
+                        <li key={link.url}>
+                          <a href={link.url} target="_blank" rel="noopener noreferrer">{link.label}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+        <div className="resource-page-cta">
+          <p>{r.cta}</p>
+          <SiteButton variant="primary" onClick={() => goToSection('programs', setView)}>{r.ctaBtn}</SiteButton>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Buy({ setView, t, lang }) {
+  const b = t.buy;
+  const programId = sessionStorage.getItem('pb-checkout-program') || '8-week';
+  const product = pricingProduct(programId);
+  const cohort = window.PB_PRICING.nextCohort[lang];
+  const stripeReady = window.PB_PRICING_HELPERS.hasStripeLink(programId);
+  const priceDisplay = window.PB_PRICING_HELPERS.displayPrice(programId, lang) || product?.display;
+
+  React.useEffect(() => {
+    if (!product || !isPurchasable(programId)) {
+      goToSection('programs', setView);
+      return;
+    }
+    if (stripeReady) payWithStripe(programId);
+  }, [programId, product, stripeReady]);
+
+  if (!product || !isPurchasable(programId)) return null;
+
+  const pay = () => {
+    if (payWithStripe(programId)) return;
+    checkoutMailto({ ...product, id: programId }, lang);
+  };
+
+  return (
+    <div style={{ fontFamily: 'var(--font-body)' }}>
+      <div className="page-hero-band">
+        <SectionLabel light>{b.title}</SectionLabel>
+        <h1>{b.title}</h1>
+        <p>{b.subtitle}</p>
+      </div>
+      <div className="container section">
+        <Card style={{ maxWidth: '560px', margin: '0 auto' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'var(--text-lg)', margin: '0 0 16px' }}>{b.orderTitle}</h2>
+          <div style={{ borderBottom: '1px solid var(--border-default)', paddingBottom: '16px', marginBottom: '16px' }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'var(--text-base)' }}>{product.name[lang]}</div>
+            <p style={{ margin: '8px 0 0', color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-base)' }}>{product.summary[lang]}</p>
+            <p style={{ margin: '12px 0 0', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
+              {b.cohortLabel}: <strong style={{ color: 'var(--text-primary)' }}>{cohort}</strong>
+            </p>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '20px' }}>
+            <span style={{ fontWeight: 600 }}>{b.totalLabel}</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '28px' }}>{priceDisplay}</span>
+          </div>
+          <SiteButton variant="primary" style={{ width: '100%' }} onClick={pay}>
+            {stripeReady ? b.payNowCta : b.continueCta}
+          </SiteButton>
+          {!stripeReady && (
+            <p style={{ margin: '12px 0 0', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 'var(--leading-base)' }}>{b.stripePending}</p>
+          )}
+          {stripeReady && (
+            <p style={{ margin: '12px 0 0', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', textAlign: 'center' }}>{b.payNote}</p>
+          )}
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
+            <SiteButton variant="ghost" size="sm" onClick={() => goToSection('programs', setView)}>{b.backCta}</SiteButton>
+            {!stripeReady && (
+              <SiteButton variant="ghost" size="sm" onClick={() => openDiagnostic('buy')}>{t.nav.bookCall}</SiteButton>
+            )}
+          </div>
+        </Card>
+        <p style={{ textAlign: 'center', marginTop: '20px', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>{b.secureNote}</p>
+      </div>
+    </div>
+  );
+}
+
+function Checkout({ setView, t, lang }) {
+  const c = t.checkout;
+  const programId = sessionStorage.getItem('pb-checkout-program') || '8-week';
+  const product = pricingProduct(programId);
+  const cohort = window.PB_PRICING.nextCohort[lang];
+
+  return (
+    <div style={{ fontFamily: 'var(--font-body)' }}>
+      <div className="page-header text-center" style={{ textAlign: 'center', paddingBottom: '16px' }}>
+        <h1>{c.title}</h1>
+        <p style={{ margin: '8px auto 0' }}>{c.subtitle}</p>
+      </div>
+      <div className="container">
+        <Card style={{ maxWidth: '560px', margin: '0 auto 24px' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'var(--text-lg)', margin: '0 0 12px' }}>{c.cohortTitle}</h2>
+          {product && (
+            <p style={{ margin: '0 0 8px', color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
+              {c.programLabel}: <strong style={{ color: 'var(--text-primary)' }}>{product.name[lang]}</strong>
+            </p>
+          )}
+          <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'var(--text-base)' }}>
+            {c.cohortStarts || cohort}
+          </p>
+        </Card>
+        <Card style={{ maxWidth: '560px', margin: '0 auto' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'var(--text-lg)', margin: '0 0 16px' }}>{c.stepsTitle}</h2>
+          <ol className="checkout-steps" style={{ margin: 0, paddingLeft: '20px', lineHeight: '2', color: 'var(--text-secondary)' }}>
+            {c.steps.map(step => <li key={step}>{step}</li>)}
+          </ol>
+        </Card>
+        <p style={{ textAlign: 'center', marginTop: '24px', color: 'var(--text-secondary)' }}>{c.questions}</p>
+        <div style={{ textAlign: 'center', marginTop: '16px' }}>
+          <SiteButton variant="primary" onClick={() => goToSection('top', setView)}>{c.homeBtn}</SiteButton>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const router = window.PB_ROUTER;
+  const parsed = router.parse();
+  const [view, setViewState] = React.useState(parsed.view);
+  const [lang, setLangState] = React.useState(parsed.lang);
+  const t = useContent(lang);
+
+  const setView = (v, replace) => {
+    if (!router.VIEWS.includes(v)) v = 'home';
+    const next = router.navigate(lang, v, replace);
+    setViewState(next.view);
+    const section = sectionForView(next.view);
+    if (section) {
+      requestAnimationFrame(() => setTimeout(() => scrollToSection(section), 80));
+    } else if (!isLandingView(next.view)) {
+      window.scrollTo(0, 0);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    if (window.PB_ANALYTICS) window.PB_ANALYTICS.pageView(next.lang, next.view);
+    router.updateHreflang(next.lang, next.view);
+  };
+
+  const setLang = (nextLang) => {
+    localStorage.setItem('pb-lang', nextLang);
+    const next = router.navigate(nextLang, view, true);
+    setLangState(next.lang);
+    if (window.PB_ANALYTICS) window.PB_ANALYTICS.pageView(next.lang, next.view);
+    router.updateHreflang(next.lang, next.view);
+  };
+
+  React.useEffect(() => {
+    router.navigate(lang, view, true);
+    router.updateHreflang(lang, view);
+    const section = sectionForView(view);
+    if (section) setTimeout(() => scrollToSection(section), 150);
+  }, []);
+
+  React.useEffect(() => {
+    document.title = t.meta.title;
+    document.documentElement.lang = lang;
+    const skip = document.querySelector('.skip-link');
+    if (skip && t.a11y) skip.textContent = t.a11y.skipToContent;
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.content = t.meta.description;
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.content = t.meta.title;
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.content = t.meta.description;
+    router.updateHreflang(lang, view);
+
+    const origin = window.location.origin;
+    const base = router.siteBase();
+    let canonical = document.getElementById('canonical-link');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.id = 'canonical-link';
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
+    }
+    canonical.href = origin + base + lang + (router.SLUGS[lang][view] ? '/' + router.SLUGS[lang][view] : '');
+
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogImage) ogImage.content = origin + base + 'assets/hero-professional.png';
+
+    let ld = document.getElementById('pb-structured-data');
+    if (!ld) {
+      ld = document.createElement('script');
+      ld.id = 'pb-structured-data';
+      ld.type = 'application/ld+json';
+      document.head.appendChild(ld);
+    }
+    ld.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Organization',
+          name: 'Profesionistas Bilingües',
+          parentOrganization: { '@type': 'Organization', name: 'Palm Learning Center' },
+          url: origin + base,
+          email: 'info@profesionistasbilingues.com',
+          sameAs: (t.social.items || []).map(item => item.url),
+        },
+        {
+          '@type': 'Course',
+          name: '8-Week Bilingual Workforce Performance Program',
+          description: t.meta.description,
+          provider: { '@type': 'Organization', name: 'Palm Learning Center' },
+          offers: {
+            '@type': 'Offer',
+            price: '1297',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+          },
+        },
+      ],
+    });
+
+    if (window.PB_ANALYTICS) window.PB_ANALYTICS.pageView(lang, view);
+  }, [lang, view, t]);
+
+  React.useEffect(() => {
+    if (window.PB_CONSENT && t.consent) window.PB_CONSENT.mount(t.consent);
+  }, [t]);
+
+  React.useEffect(() => {
+    localStorage.setItem('pb-lang', lang);
+  }, [lang]);
+
+  React.useEffect(() => {
+    const syncRoute = () => {
+      const p = router.parse();
+      setViewState(p.view);
+      setLangState(p.lang);
+      const section = sectionForView(p.view);
+      if (section && isLandingView(p.view)) {
+        setTimeout(() => scrollToSection(section), 120);
+      } else if (isLandingView(p.view) && p.view === 'home') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+    window.addEventListener('popstate', syncRoute);
+    window.addEventListener('hashchange', syncRoute);
+    return () => {
+      window.removeEventListener('popstate', syncRoute);
+      window.removeEventListener('hashchange', syncRoute);
+    };
+  }, []);
+
+  const utilityScreens = {
+    contact: () => <ContactPage t={t} />,
+    privacy: () => <LegalPage t={t} pageKey="privacy" />,
+    terms: () => <LegalPage t={t} pageKey="terms" />,
+    resources: () => <ResourcesPage setView={setView} t={t} lang={lang} />,
+    checkout: Checkout,
+    buy: Buy,
+  };
+
+  const Screen = isLandingView(view)
+    ? LandingPage
+    : (utilityScreens[view] || LandingPage);
+
+  return (
+    <div className="site-wrap">
+      <NavBar view={view} setView={setView} lang={lang} setLang={setLang} t={t} />
+      <main id="main-content" className="site-main" tabIndex={-1}>
+        <Screen setView={setView} t={t} lang={lang} />
+      </main>
+      <Footer setView={setView} lang={lang} setLang={setLang} t={t} />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

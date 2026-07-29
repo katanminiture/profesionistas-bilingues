@@ -1,0 +1,21 @@
+.DS_Store
+.thumbnail
+*.zip
+node_modules/
+.vercel
+
+# Build output (generated on Vercel via `npm run build`)
+site/share/
+
+# Local workspace copies
+uploads/
+
+# Design system dev artifacts (not needed to build/deploy the site)
+guidelines/
+components/
+_adherence.oxlintrc.json
+_ds_manifest.json
+thumbnail.html
+ui_kits/*
+!ui_kits/marketing-site/
+!ui_kits/marketing-site/**

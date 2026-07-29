@@ -1,0 +1,5 @@
+# Netlify / Cloudflare Pages — SPA pathname routing
+/site/es/*  /site/index.html  200
+/site/en/*  /site/index.html  200
+/site/es    /site/index.html  200
+/site/en    /site/index.html  200

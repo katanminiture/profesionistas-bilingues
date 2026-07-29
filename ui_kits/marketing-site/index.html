@@ -1,0 +1,198 @@
+<!-- @dsCard group="Marketing Site" viewport="1280x760" name="Marketing Site" subtitle="Home, Coaches, Pricing, Booking — click nav to switch" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+</head>
+<body style="margin:0;background:var(--surface-page);">
+<div id="root"></div>
+<script type="text/babel">
+const DS = window.ProfesionistasBilingEsDesignSystem_30204a;
+const { Button, Card, Badge, Tag, Input, Select, Radio, Switch, Dialog, Motif } = DS;
+
+function NavBar({ view, setView }) {
+  const links = [['home','Coaching'],['coaches','Coaches'],['pricing','Pricing']];
+  return (
+    <nav style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 48px',background:'var(--color-white)',borderBottom:'1px solid var(--border-default)'}}>
+      <div style={{display:'flex',alignItems:'center',gap:'10px',cursor:'pointer'}} onClick={()=>setView('home')}>
+        <img src="../../assets/logo-mark.png" style={{width:'32px'}} />
+        <span style={{fontFamily:'var(--font-display)',fontWeight:800,fontSize:'17px',color:'var(--text-primary)'}}>Profesionistas Bilingües</span>
+      </div>
+      <div style={{display:'flex',gap:'32px'}}>
+        {links.map(([k,l]) => (
+          <span key={k} onClick={()=>setView(k)} style={{fontFamily:'var(--font-body)',fontWeight:600,fontSize:'var(--text-sm)',color:view===k?'var(--color-bridge-blue)':'var(--text-primary)',cursor:'pointer'}}>{l}</span>
+        ))}
+      </div>
+      <div style={{display:'flex',gap:'12px',alignItems:'center'}}>
+        <div style={{display:'flex',border:'1px solid var(--border-default)',borderRadius:'var(--radius-pill)',overflow:'hidden',fontFamily:'var(--font-body)',fontWeight:700,fontSize:'var(--text-xs)'}}>
+          <span style={{padding:'6px 12px',background:'var(--color-bridge-blue)',color:'var(--color-white)'}}>EN</span>
+          <span style={{padding:'6px 12px',color:'var(--text-primary)'}}>ES</span>
+        </div>
+        <Button variant="primary" size="sm" onClick={()=>setView('booking')}>Book a call</Button>
+      </div>
+    </nav>
+  );
+}
+
+function Home({ setView }) {
+  return (
+    <div style={{fontFamily:'var(--font-body)'}}>
+      <section style={{position:'relative',padding:'80px 48px',background:'var(--color-bridge-blue)',color:'var(--color-white)',display:'flex',alignItems:'center',gap:'48px',overflow:'hidden'}}>
+        <Motif variant="ring" color="rgba(255,255,255,0.4)" size={220} rings={3} style={{position:'absolute',top:'-90px',right:'140px'}} />
+        <Motif variant="dot" color="var(--color-fluent-yellow)" size={38} style={{position:'absolute',top:'56px',right:'30px'}} />
+        <Motif variant="spark" color="var(--color-fluent-yellow)" size={56} style={{position:'absolute',bottom:'24px',left:'28px'}} />
+        <Motif variant="spark" color="rgba(255,255,255,0.5)" size={26} style={{position:'absolute',bottom:'96px',left:'130px'}} />
+        <Motif variant="blob" color="var(--color-progress-purple)" size={200} style={{position:'absolute',bottom:'-80px',right:'220px'}} />
+        <div style={{flex:1,position:'relative'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'8px',fontFamily:'var(--font-display)',fontWeight:700,fontSize:'12px',letterSpacing:'var(--tracking-widest)',color:'rgba(255,255,255,0.9)',textTransform:'uppercase'}}><Motif variant="dot" color="var(--color-fluent-yellow)" size={8} />Perform. Connect. Grow.</div>
+          <h1 style={{fontFamily:'var(--font-display)',fontWeight:800,fontSize:'48px',lineHeight:'var(--leading-tight)',margin:'16px 0 0'}}>Where bilingual professionals find their voice.</h1>
+          <p style={{marginTop:'20px',fontSize:'19px',lineHeight:'var(--leading-base)',color:'rgba(255,255,255,0.82)',maxWidth:'480px'}}>Personalized English and Spanish coaching — online or in person, always built around who you are and where you're headed.</p>
+          <div style={{marginTop:'32px',display:'flex',gap:'14px'}}>
+            <Button variant="primary" size="lg" style={{background:'var(--color-white)',color:'var(--color-bridge-blue)'}} onClick={()=>setView('booking')}>Book a free consult</Button>
+            <Button variant="secondary" size="lg" style={{color:'var(--color-white)',borderColor:'rgba(255,255,255,0.4)'}} onClick={()=>setView('coaches')}>Meet the coaches</Button>
+          </div>
+          <div style={{marginTop:'28px',display:'flex',gap:'10px',fontSize:'var(--text-sm)',color:'rgba(255,255,255,0.75)'}}>
+            <span>"Find your voice."</span>
+            <span>·</span>
+            <span>"Encuentra tu voz."</span>
+          </div>
+        </div>
+        <div style={{width:'320px',height:'220px',flexShrink:0,position:'relative'}}><image-slot id="hero-image" shape="rounded" radius="16" placeholder="Drop a hero image"></image-slot></div>
+      </section>
+      <section style={{padding:'64px 48px'}}>
+        <h2 style={{fontFamily:'var(--font-display)',fontWeight:700,fontSize:'var(--text-2xl)',color:'var(--text-primary)'}}>Coaching built around you</h2>
+        <div style={{marginTop:'28px',display:'flex',gap:'20px'}}>
+          {[
+            {t:'Executive Presence',d:'Lead meetings and deliver presentations with authority in either language.',seed:'pb-program-1'},
+            {t:'Interview & Negotiation',d:'Practice high-stakes conversations before they count.',seed:'pb-program-2'},
+            {t:'Accent & Fluency',d:'Sharpen pronunciation and rhythm for the register you need.',seed:'pb-program-3'},
+          ].map(c => (
+            <Card key={c.t} style={{flex:1,padding:0,overflow:'hidden'}}>
+              <div style={{width:'100%',height:'140px'}}><image-slot id={`program-${c.seed}`} shape="rect" placeholder={c.t}></image-slot></div>
+              <div style={{padding:'var(--space-5)'}}>
+                <Badge tone="brand">Program</Badge>
+                <div style={{marginTop:'12px',fontFamily:'var(--font-display)',fontWeight:700,fontSize:'var(--text-lg)',color:'var(--text-primary)'}}>{c.t}</div>
+                <div style={{marginTop:'8px',fontSize:'var(--text-base)',color:'var(--text-secondary)',lineHeight:'var(--leading-base)'}}>{c.d}</div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </section>
+      <section style={{padding:'0 48px 72px',display:'flex',gap:'8px',flexWrap:'wrap'}}>
+        {['Business English','Interview Prep','Accent Reduction','Español para negocios','Public Speaking'].map(t => <Tag key={t}>{t}</Tag>)}
+      </section>
+    </div>
+  );
+}
+
+function Coaches() {
+  const [filter, setFilter] = React.useState('all');
+  const coaches = [
+    { name: 'Marisol Vega', role: 'Executive & Presentation Coach', langs: ['English','Español'], tag: 'Business English' },
+    { name: 'James Whitfield', role: 'Interview & Career Coach', langs: ['English'], tag: 'Interview Prep' },
+    { name: 'Renata Cordero', role: 'Accent & Fluency Coach', langs: ['English','Español'], tag: 'Accent Reduction' },
+    { name: 'Diego Salazar', role: 'Negotiation Coach', langs: ['Español','English'], tag: 'Business English' },
+  ].map((c,i)=>({...c, accent: i%2===0?'var(--color-bridge-blue)':'var(--color-progress-purple)'}));
+  const tags = ['all','Business English','Interview Prep','Accent Reduction'];
+  const shown = filter === 'all' ? coaches : coaches.filter(c => c.tag === filter);
+  return (
+    <div style={{fontFamily:'var(--font-body)',padding:'56px 48px'}}>
+      <h1 style={{fontFamily:'var(--font-display)',fontWeight:800,fontSize:'var(--text-2xl)',color:'var(--text-primary)'}}>Meet the coaches</h1>
+      <p style={{marginTop:'8px',fontSize:'var(--text-base)',color:'var(--text-secondary)'}}>Every coach is bilingual and certified in professional communication.</p>
+      <div style={{marginTop:'24px',display:'flex',gap:'8px'}}>
+        {tags.map(t => <Tag key={t} selected={filter===t} onClick={()=>setFilter(t)}>{t==='all'?'All':t}</Tag>)}
+      </div>
+      <div style={{marginTop:'28px',display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'20px'}}>
+        {shown.map(c => (
+          <Card key={c.name} style={{display:'flex',gap:'16px',alignItems:'flex-start'}}>
+            <div style={{width:'56px',height:'56px',borderRadius:'50%',background:c.accent,color:'var(--color-white)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-display)',fontWeight:700,fontSize:'19px',flexShrink:0}}>{c.name.split(' ').map(n=>n[0]).join('')}</div>
+            <div>
+              <div style={{fontFamily:'var(--font-display)',fontWeight:700,fontSize:'var(--text-lg)',color:'var(--text-primary)'}}>{c.name}</div>
+              <div style={{fontSize:'var(--text-sm)',color:'var(--text-secondary)'}}>{c.role}</div>
+              <div style={{marginTop:'8px',display:'flex',gap:'6px'}}>{c.langs.map(l => <Badge key={l} tone="neutral">{l}</Badge>)}</div>
+              <div style={{marginTop:'12px'}}><Button variant="secondary" size="sm">View profile</Button></div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Pricing() {
+  const plans = [
+    { name: 'Starter', price: '$120', period: '/mo', desc: '2 sessions monthly', features: ['2x 45-min sessions','Async feedback','Email support'] },
+    { name: 'Growth', price: '$220', period: '/mo', desc: '4 sessions monthly', features: ['4x 45-min sessions','Custom curriculum','Priority scheduling','Progress reviews'], featured: true },
+    { name: 'Executive', price: '$420', period: '/mo', desc: 'Weekly + on-demand', features: ['Weekly sessions','On-demand practice calls','Dedicated coach','Quarterly assessment'] },
+  ];
+  return (
+    <div style={{fontFamily:'var(--font-body)',padding:'56px 48px'}}>
+      <h1 style={{fontFamily:'var(--font-display)',fontWeight:800,fontSize:'var(--text-2xl)',color:'var(--text-primary)',textAlign:'center'}}>Plans for every goal</h1>
+      <p style={{marginTop:'8px',fontSize:'var(--text-base)',color:'var(--text-secondary)',textAlign:'center'}}>Cancel anytime. Switch between English and Español coaching whenever you like.</p>
+      <div style={{marginTop:'36px',display:'flex',gap:'20px',justifyContent:'center'}}>
+        {plans.map(p => (
+          <Card key={p.name} style={{width:'260px',border:p.featured?'2px solid var(--color-progress-purple)':undefined}}>
+            {p.featured && <Badge tone="brand">Most popular</Badge>}
+            <div style={{marginTop:p.featured?'12px':'0',fontFamily:'var(--font-display)',fontWeight:700,fontSize:'var(--text-lg)',color:'var(--text-primary)'}}>{p.name}</div>
+            <div style={{marginTop:'6px',display:'flex',alignItems:'baseline',gap:'4px'}}>
+              <span style={{fontFamily:'var(--font-display)',fontWeight:800,fontSize:'36px',color:'var(--text-primary)'}}>{p.price}</span>
+              <span style={{fontSize:'var(--text-sm)',color:'var(--text-secondary)'}}>{p.period}</span>
+            </div>
+            <div style={{fontSize:'var(--text-sm)',color:'var(--text-secondary)'}}>{p.desc}</div>
+            <ul style={{marginTop:'16px',paddingLeft:'18px',color:'var(--text-primary)',fontSize:'var(--text-sm)',lineHeight:'2'}}>
+              {p.features.map(f => <li key={f}>{f}</li>)}
+            </ul>
+            <Button variant={p.featured?'primary':'secondary'} style={{width:'100%',marginTop:'8px'}}>Choose {p.name}</Button>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Booking() {
+  const [confirmed, setConfirmed] = React.useState(false);
+  return (
+    <div style={{fontFamily:'var(--font-body)',padding:'56px 48px',display:'flex',justifyContent:'center'}}>
+      <Card style={{width:'480px'}}>
+        <div style={{fontFamily:'var(--font-display)',fontWeight:700,fontSize:'var(--text-lg)',color:'var(--text-primary)'}}>Book your free consult</div>
+        <div style={{marginTop:'4px',fontSize:'var(--text-sm)',color:'var(--text-secondary)'}}>15 minutes, no commitment.</div>
+        <div style={{marginTop:'20px',display:'flex',flexDirection:'column',gap:'16px'}}>
+          <Input label="Full name" placeholder="Ana García" />
+          <Input label="Email" type="email" placeholder="you@company.com" />
+          <Select label="Coaching language" options={[{value:'en',label:'English'},{value:'es',label:'Español'},{value:'both',label:'Both'}]} />
+          <div>
+            <div style={{fontSize:'var(--text-xs)',fontWeight:600,color:'var(--text-primary)',marginBottom:'8px'}}>Format</div>
+            <div style={{display:'flex',gap:'20px'}}>
+              <Radio name="fmt" value="online" label="Online" defaultChecked />
+              <Radio name="fmt" value="in-person" label="In person" />
+            </div>
+          </div>
+          <Switch label="Send me a calendar reminder" defaultChecked />
+          <Button variant="primary" size="lg" onClick={()=>setConfirmed(true)}>Confirm consult</Button>
+        </div>
+      </Card>
+      <Dialog open={confirmed} title="You're booked!" onClose={()=>setConfirmed(false)} actions={<Button variant="primary" onClick={()=>setConfirmed(false)}>Done</Button>}>
+        Check your email for a confirmation and calendar invite.
+      </Dialog>
+    </div>
+  );
+}
+
+function App(){
+  const [view, setView] = React.useState('home');
+  const Screen = { home: Home, coaches: Coaches, pricing: Pricing, booking: Booking }[view];
+  return (
+    <div>
+      <NavBar view={view} setView={setView} />
+      <Screen setView={setView} />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body></html>

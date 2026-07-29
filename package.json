@@ -1,0 +1,9 @@
+{
+  "name": "profesionistas-bilingues",
+  "private": true,
+  "description": "Profesionistas Bilingües marketing site",
+  "scripts": {
+    "build": "node site/build-share-package.mjs",
+    "dev": "python3 -m http.server 8080"
+  }
+}
