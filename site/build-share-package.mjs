@@ -58,7 +58,8 @@ function buildStylesBundle() {
   const stylesEntry = path.join(root, 'styles.css');
   const stylesBase = resolveStyleImports(fs.readFileSync(stylesEntry, 'utf8'), root);
   const siteStyles = fs.readFileSync(path.join(__dirname, 'site.css'), 'utf8');
-  return `${stylesBase}\n\n${siteStyles}`;
+  const premiumStyles = fs.readFileSync(path.join(__dirname, 'site-premium.css'), 'utf8');
+  return `${stylesBase}\n\n${siteStyles}\n\n${premiumStyles}`;
 }
 
 function buildInto(targetDir) {
