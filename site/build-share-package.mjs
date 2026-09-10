@@ -46,6 +46,21 @@ function copyDir(src, dest) {
   }
 }
 
+function resolveStyleImports(css, baseDir) {
+  return css.replace(/@import\s+['"]([^'"]+)['"]\s*;/g, (_, importPath) => {
+    const fullPath = path.resolve(baseDir, importPath);
+    if (!fs.existsSync(fullPath)) throw new Error(`Missing stylesheet import: ${importPath}`);
+    return fs.readFileSync(fullPath, 'utf8');
+  });
+}
+
+function buildStylesBundle() {
+  const stylesEntry = path.join(root, 'styles.css');
+  const stylesBase = resolveStyleImports(fs.readFileSync(stylesEntry, 'utf8'), root);
+  const siteStyles = fs.readFileSync(path.join(__dirname, 'site.css'), 'utf8');
+  return `${stylesBase}\n\n${siteStyles}`;
+}
+
 function buildInto(targetDir) {
   rmrf(targetDir);
   fs.mkdirSync(targetDir, { recursive: true });
@@ -55,10 +70,7 @@ function buildInto(targetDir) {
     copyFile(path.join(root, 'assets', name), path.join(targetDir, 'assets', name));
   }
 
-  const styles = [
-    fs.readFileSync(path.join(root, 'styles.css'), 'utf8'),
-    fs.readFileSync(path.join(__dirname, 'site.css'), 'utf8'),
-  ].join('\n\n');
+  const styles = buildStylesBundle();
   fs.writeFileSync(path.join(targetDir, 'bundle.css'), styles);
 
   const indexSrc = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');

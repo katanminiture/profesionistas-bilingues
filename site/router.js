@@ -1,9 +1,9 @@
 window.PB_ROUTER = (function () {
-  const VIEWS = ['home', 'about', 'programs', 'pricing', 'organizations', 'resources', 'faq', 'diagnostico', 'contact', 'privacy', 'terms', 'checkout', 'buy', 'quiz'];
+  const VIEWS = ['home', 'professionals', 'organizations', 'programs', 'pricing', 'certification', 'about', 'assess', 'method', 'resources', 'faq', 'diagnostico', 'contact', 'privacy', 'terms', 'checkout', 'buy', 'quiz'];
 
   const SLUGS = {
-    en: { home: '', programs: 'programs', pricing: 'pricing', organizations: 'organizations', about: 'about', resources: 'resources', faq: 'faq', diagnostico: 'diagnostic', contact: 'contact', privacy: 'privacy', terms: 'terms', checkout: 'confirmation', buy: 'buy', quiz: 'quiz' },
-    es: { home: '', programs: 'programas', pricing: 'precios', organizations: 'empresas', about: 'nosotros', resources: 'recursos', faq: 'preguntas', diagnostico: 'diagnostico', contact: 'contacto', privacy: 'privacidad', terms: 'terminos', checkout: 'confirmacion', buy: 'comprar', quiz: 'cuestionario' },
+    en: { home: '', professionals: 'for-professionals', organizations: 'for-organizations', programs: 'programs', pricing: 'pricing', certification: 'certification', about: 'about', assess: 'assessment', method: 'how-it-works', resources: 'resources', faq: 'faq', diagnostico: 'diagnostic', contact: 'contact', privacy: 'privacy', terms: 'terms', checkout: 'confirmation', buy: 'buy', quiz: 'quiz' },
+    es: { home: '', professionals: 'profesionales', organizations: 'organizaciones', programs: 'programas', pricing: 'precios', certification: 'certificacion', about: 'nosotros', assess: 'evaluacion', method: 'como-funciona', resources: 'recursos', faq: 'preguntas', diagnostico: 'diagnostico', contact: 'contacto', privacy: 'privacidad', terms: 'terminos', checkout: 'confirmacion', buy: 'comprar', quiz: 'cuestionario' },
   };
 
   const REVERSE = { en: {}, es: {} };

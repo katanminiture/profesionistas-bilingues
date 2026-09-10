@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "profesionistas-bilingues",
   "buildCommand": "npm run build",
   "outputDirectory": "site/share",
   "rewrites": [

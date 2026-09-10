@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Profesionistas Bilingües — Sé Bilingüe | Palm Learning Center</title>
-  <meta name="description" content="Bilingual Workforce Performance Program™ — coaching de inglés laboral para profesionistas y organizaciones. Sé Bilingüe.">
+  <meta name="description" content="Workplace English communication programs for Spanish-speaking professionals and organizations. Skills assessment, cohort training, and Bilingual Professional Certification.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Profesionistas Bilingües — Sé Bilingüe | Palm Learning Center">
-  <meta property="og:description" content="Bilingual Workforce Performance Program™ — coaching de inglés laboral para profesionistas y organizaciones. Sé Bilingüe.">
+  <meta property="og:title" content="Profesionistas Bilingües — English Communication for Professional Success">
+  <meta property="og:description" content="Workplace English communication programs for Spanish-speaking professionals and organizations. Skills assessment, cohort training, and Bilingual Professional Certification.">
   <meta property="og:image" content="./assets/hero-professional.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="../assets/favicon-32.png" type="image/png" sizes="32x32">
@@ -15,9 +15,10 @@
   <link rel="apple-touch-icon" href="../assets/favicon-180.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;1,14..32,400&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="./site.css">
+  <link rel="stylesheet" href="./site-premium.css">
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
@@ -41,47 +42,64 @@ const DS = window.ProfesionistasBilingEsDesignSystem_30204a;
 const { Button, Card, Badge, Tag, Input, Select, Dialog, Motif, Divider } = DS;
 
 const CALENDLY_URL = 'https://calendly.com/palmlearning';
-const INTRO_VIDEO_EMBED = (window.PB_CONFIG && window.PB_CONFIG.welcomeVideoEmbed) || '';
-const STORY_VIDEO_EMBED = (window.PB_CONFIG && window.PB_CONFIG.storyVideoEmbed) || '';
+const ASSESSMENT_URL = 'https://claude.ai/code/artifact/86532a48-13c5-4cbc-a223-2bb558cff672';
 
 const INVERSE_BTN = {
   primary: {
-    background: 'var(--color-white)',
+    background: 'var(--color-fluent-yellow)',
     color: 'var(--color-ink-navy)',
     border: '1px solid transparent',
     boxShadow: 'none',
   },
-  secondary: { background: 'transparent', color: '#fff', border: '1.5px solid rgba(255,255,255,0.7)' },
+  secondary: { background: 'transparent', color: '#fff', border: '1.5px solid rgba(255,255,255,0.55)' },
 };
 
 const LIGHT_BTN = {
   primary: {
-    background: 'var(--color-bridge-blue)',
-    color: 'var(--color-white)',
+    background: 'var(--color-fluent-yellow)',
+    color: 'var(--color-ink-navy)',
     border: '1px solid transparent',
     boxShadow: 'none',
   },
   secondary: {
-    background: 'var(--color-white)',
+    background: 'transparent',
+    color: 'var(--color-white)',
+    border: '1.5px solid rgba(255,255,255,0.55)',
+    boxShadow: 'none',
+  },
+};
+
+const LIGHT_BTN_ON_WHITE = {
+  primary: {
+    background: 'var(--color-fluent-yellow)',
+    color: 'var(--color-ink-navy)',
+    border: '1px solid transparent',
+    boxShadow: 'none',
+  },
+  secondary: {
+    background: 'transparent',
     color: 'var(--color-ink-navy)',
     border: '1.5px solid var(--color-ink-navy)',
     boxShadow: 'none',
   },
 };
 
-function SiteButton({ variant = 'primary', size = 'md', inverse = false, style, className, ...props }) {
+function SiteButton({ variant = 'primary', size = 'md', inverse = false, onWhite = false, style, className, ...props }) {
   let resolved = variant;
   if (variant === 'accent' || variant === 'ghost') resolved = variant === 'ghost' ? 'secondary' : 'primary';
 
-  const tone = inverse
-    ? (INVERSE_BTN[resolved] || INVERSE_BTN.primary)
-    : (LIGHT_BTN[resolved] || {});
+  const palette = inverse
+    ? INVERSE_BTN
+    : (onWhite ? LIGHT_BTN_ON_WHITE : LIGHT_BTN);
+
+  const tone = palette[resolved] || palette.primary;
 
   const btn = (
     <Button
       variant={resolved}
       size={size}
-      style={{ boxShadow: 'none', ...tone, ...style }}
+      className={`site-btn site-btn--${resolved}${size === 'lg' ? ' site-btn--lg' : ''}${size === 'sm' ? ' site-btn--sm' : ''}`}
+      style={{ boxShadow: 'none', borderRadius: '999px', fontWeight: 700, ...tone, ...style }}
       {...props}
     />
   );
@@ -182,7 +200,7 @@ function LangSwitch({ lang, setLang, a11y, variant = 'pill' }) {
         aria-label={a11y.langEn}
         onClick={() => setLang('en')}
       >
-        EN
+        {isText ? 'English' : 'EN'}
       </button>
       {isText && <span className="lang-toggle__sep" aria-hidden="true">|</span>}
       <button
@@ -192,7 +210,7 @@ function LangSwitch({ lang, setLang, a11y, variant = 'pill' }) {
         aria-label={a11y.langEs}
         onClick={() => setLang('es')}
       >
-        ES
+        {isText ? 'Español' : 'ES'}
       </button>
     </div>
   );
@@ -204,6 +222,7 @@ const FEATURE_ICON_PATHS = {
   award: ['M12 15a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z', 'M8.21 13.89 7 23l5-3 5 3-1.21-9.12'],
   briefcase: ['M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16', 'M2 20h20', 'M14 12h.01'],
   'trending-up': ['M16 7h6v6', 'M22 7l-8.5 8.5-5-5L2 17'],
+  rocket: ['M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.05-2.91a2.18 2.18 0 0 0-2.91-.05Z', 'M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2Z', 'M9 12H4s.55-3.03 2-4c1.62-1.08 5-.96 5-.96', 'M12 15v5s3.03-.55 4-2c1.08-1.62.96-5 .96-5'],
   target: ['M12 2v4', 'M12 18v4', 'M4.93 4.93l2.83 2.83', 'M16.24 16.24l2.83 2.83', 'M2 12h4', 'M18 12h4', 'M4.93 19.07l2.83-2.83', 'M16.24 7.76l2.83-2.83', 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z'],
   gear: ['M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z', 'M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z'],
   chip: ['M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18'],
@@ -225,6 +244,10 @@ const FEATURE_ICON_PATHS = {
   lightbulb: ['M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5', 'M9 18h6', 'M10 22h4'],
   globe: ['M21 12a9 9 0 1 1-9-9', 'M3.6 9h16.8', 'M3.6 15h16.8', 'M12 3c2.2 2.4 3.5 5.1 3.5 9s-1.3 6.6-3.5 9c-2.2-2.4-3.5-5.1-3.5-9s1.3-6.6 3.5-9Z'],
   spark: ['M12 3v3', 'M12 18v3', 'M3 12h3', 'M18 12h3', 'M5.6 5.6l2.1 2.1', 'M16.3 16.3l2.1 2.1', 'M5.6 18.4l2.1-2.1', 'M16.3 7.7l2.1-2.1', 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z'],
+  calendar: ['M8 2v4', 'M16 2v4', 'M3 10h18', 'M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z', 'M8 14h.01', 'M12 14h.01', 'M16 14h.01', 'M8 18h.01', 'M12 18h.01'],
+  gift: ['M20 12v10H4V12', 'M2 7h20v5H2z', 'M12 22V7', 'M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7Z', 'M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z'],
+  lock: ['M7 11V7a5 5 0 0 1 10 0v4', 'M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Z'],
+  check: ['M20 6 9 17l-5-5'],
   practice: ['M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z'],
   ear: ['M6 8.5a6 6 0 1 1 12 0c0 1.5-.5 3-1.5 4.2L15 17H9l-1.5-4.3A6 6 0 0 1 6 8.5Z', 'M9 17v1a3 3 0 0 0 6 0v-1'],
   pen: ['M12 20h9', 'M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z'],
@@ -314,37 +337,38 @@ function CompetencyChip({ icon, label, accent = 'blue' }) {
 function JourneyTimeline({ steps }) {
   const items = steps || [];
   return (
-    <ol className="journey-timeline">
-      {items.map((step, index) => {
-        const isLast = index === items.length - 1;
-        const classes = [
-          'journey-timeline__step',
-          step.milestone && 'journey-timeline__step--milestone',
-          step.outcome && 'journey-timeline__step--outcome',
-          isLast && 'journey-timeline__step--last',
-        ].filter(Boolean).join(' ');
-        return (
-          <li key={step.num} className={classes}>
-            <div className="journey-timeline__track" aria-hidden="true">
-              {!isLast && <span className="journey-timeline__line" />}
-              <span className="journey-timeline__node">
-                <FeatureIcon name={step.icon || 'spark'} size={22} />
-                {step.milestone && <span className="journey-timeline__milestone-dot" />}
-              </span>
-              {step.outcome && (
-                <span className="journey-timeline__beyond">
-                  <FeatureIcon name="trending-up" size={18} />
-                </span>
-              )}
-            </div>
-            <div className="journey-timeline__body">
-              <span className="journey-timeline__num">{step.num}</span>
+    <div className="step-path">
+      <div className="step-path__connector" aria-hidden="true" />
+      <ol className="step-path__list">
+        {items.map(step => (
+          <li
+            key={step.num}
+            className={`step-path__item${step.milestone ? ' step-path__item--milestone' : ''}${step.outcome ? ' step-path__item--outcome' : ''}`}
+          >
+            <span className="step-path__node" aria-hidden="true">{step.num}</span>
+            <div className="step-path__body">
               <h4>{step.title}</h4>
               <p>{step.desc}</p>
             </div>
           </li>
-        );
-      })}
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function EnglishLevelPath({ levels, label }) {
+  const rows = levels || [];
+  return (
+    <ol className="english-level-path" aria-label={label}>
+      {rows.map((row, index) => (
+        <li key={row.tier} className="english-level-path__step">
+          <span className="english-level-path__marker" aria-hidden="true">{index + 1}</span>
+          <strong className="english-level-path__tier">{row.tier}</strong>
+          {row.code && <span className="english-level-path__code">{row.code}</span>}
+          <span className="english-level-path__label">{row.label}</span>
+        </li>
+      ))}
     </ol>
   );
 }
@@ -365,6 +389,12 @@ function planCtaLabel(id, t) {
   if (canBuyNow(id)) return t.pricing.buyNowCta;
   if (isPurchasable(id)) return t.pricing.enrollCta;
   return t.pricing.contactCta;
+}
+
+function programCardCta(card, t, lang) {
+  if (card.ctaLabel) return card.ctaLabel;
+  if (card.id === 'in-person' || card.contactPricing) return t.pricing.contactCta;
+  return t.pricing.enrollCta || t.home.ctaEnroll || (lang === 'es' ? 'Inscribirme' : 'Sign up');
 }
 
 function getSiteLang() {
@@ -421,6 +451,11 @@ function useContent(lang) {
 
 function openDiagnostic(source) {
   if (window.PB_ANALYTICS) window.PB_ANALYTICS.diagnosticClick(source);
+  window.open(ASSESSMENT_URL, '_blank');
+}
+
+function openCalendly(source) {
+  if (window.PB_ANALYTICS) window.PB_ANALYTICS.diagnosticClick(source);
   window.open(CALENDLY_URL, '_blank');
 }
 
@@ -431,12 +466,16 @@ function scrollToSection(id) {
 
 const LANDING_SECTIONS = {
   home: null,
+  professionals: 'professionals',
+  organizations: 'organizations',
   programs: 'programs',
   pricing: 'programs',
-  organizations: 'organizations',
+  certification: 'certification',
   about: 'about',
+  assess: 'assess',
+  method: 'how-it-works',
   faq: 'faq',
-  diagnostico: 'diagnostico',
+  diagnostico: 'assess',
   contact: 'contact',
   quiz: 'programs',
 };
@@ -463,6 +502,146 @@ function goToSection(sectionId, setView) {
   }
 }
 
+const HOME_SCROLL_SECTIONS = [
+  { id: 'professionals', view: 'professionals' },
+  { id: 'organizations', view: 'organizations' },
+  { id: 'assess', view: 'assess' },
+  { id: 'programs', view: 'programs' },
+  { id: 'certification', view: 'certification' },
+  { id: 'about', view: 'about' },
+];
+
+function pageTitleForView(t, view) {
+  const site = t.meta.siteName || 'Profesionistas Bilingües';
+  const label = (t.pageTitles && t.pageTitles[view]) || (view === 'home' ? t.breadcrumbs.home : null);
+  if (!label || view === 'home') return t.meta.title;
+  return `${label} | ${site}`;
+}
+
+function useScrollSpy(sectionIds, enabled) {
+  const [activeId, setActiveId] = React.useState(null);
+
+  React.useEffect(() => {
+    if (!enabled) {
+      setActiveId(null);
+      return undefined;
+    }
+
+    const onScroll = () => {
+      const offset = 120;
+      let current = null;
+      sectionIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top - offset <= 0) current = id;
+      });
+      setActiveId(current);
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [enabled, sectionIds.join('|')]);
+
+  return activeId;
+}
+
+function PageBreadcrumbs({ t, items }) {
+  const a11y = t.a11y || {};
+  if (!items || items.length === 0) return null;
+  return (
+    <nav className="page-breadcrumbs" aria-label={a11y.breadcrumbs || 'Breadcrumb'}>
+      <ol className="page-breadcrumbs__list">
+        {items.map((item, i) => (
+          <li key={item.label + i} className="page-breadcrumbs__item">
+            {item.onClick ? (
+              <button type="button" className="page-breadcrumbs__link" onClick={item.onClick}>{item.label}</button>
+            ) : (
+              <span className="page-breadcrumbs__current" aria-current="page">{item.label}</span>
+            )}
+            {i < items.length - 1 && <span className="page-breadcrumbs__sep" aria-hidden="true">/</span>}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
+function SectionHeader({ label, title, titleId, lead, light, accent, align }) {
+  const headerClass = align === 'left' ? ' section-block__header--left' : '';
+  return (
+    <header className={`section-block__header${headerClass}`}>
+      {label && <SectionLabel light={light} accent={accent}>{label}</SectionLabel>}
+      {title && <h2 id={titleId} className="section-block__title">{title}</h2>}
+      {lead && <p className="section-block__lead">{lead}</p>}
+    </header>
+  );
+}
+
+function SectionBlock({ id, tone = 'cream', compact, className = '', labelledBy, accents, children }) {
+  return (
+    <section
+      id={id}
+      className={`section-block section-block--${tone}${compact ? ' section-block--compact' : ''}${accents ? ' section-block--accented' : ''}${className ? ` ${className}` : ''}`}
+      aria-labelledby={labelledBy}
+    >
+      {accents && <BrandAccents preset={accents} />}
+      <div className="container">{children}</div>
+    </section>
+  );
+}
+
+function BrandAccents({ preset = 'hero' }) {
+  const wrap = (className, node) => (
+    <span key={className} className={`brand-accents__item ${className}`}>{node}</span>
+  );
+
+  if (preset === 'hero-light') {
+    return (
+      <div className="brand-accents brand-accents--hero-light" aria-hidden="true">
+        {wrap('brand-accents__ring--tl', <Motif variant="ring" color="rgba(18, 27, 255, 0.08)" size={240} rings={3} />)}
+        {wrap('brand-accents__blob--br', <Motif variant="blob" color="var(--color-progress-purple)" size={280} />)}
+        {wrap('brand-accents__spark--tr', <Motif variant="spark" color="var(--color-fluent-yellow)" size={36} />)}
+        {wrap('brand-accents__dot--br', <Motif variant="dot" color="var(--color-fluent-yellow)" size={28} />)}
+      </div>
+    );
+  }
+
+  if (preset === 'hero') {
+    return (
+      <div className="brand-accents brand-accents--hero" aria-hidden="true">
+        {wrap('brand-accents__ring--tl', <Motif variant="ring" color="rgba(255,255,255,0.32)" size={260} rings={3} />)}
+        {wrap('brand-accents__ring--tr', <Motif variant="ring" color="rgba(15, 26, 58, 0.18)" size={180} rings={4} />)}
+        {wrap('brand-accents__blob--br', <Motif variant="blob" color="var(--color-progress-purple)" size={340} />)}
+        {wrap('brand-accents__spark--tr', <Motif variant="spark" color="var(--color-fluent-yellow)" size={40} />)}
+        {wrap('brand-accents__dot--br', <Motif variant="dot" color="var(--color-fluent-yellow)" size={32} />)}
+      </div>
+    );
+  }
+
+  if (preset === 'purple') {
+    return (
+      <div className="brand-accents brand-accents--purple" aria-hidden="true">
+        {wrap('brand-accents__ring--tr', <Motif variant="ring" color="rgba(255,255,255,0.26)" size={220} rings={3} />)}
+        {wrap('brand-accents__blob--bl', <Motif variant="blob" color="var(--color-bridge-blue)" size={260} />)}
+        {wrap('brand-accents__spark--tr', <Motif variant="spark" color="var(--color-fluent-yellow)" size={36} />)}
+        {wrap('brand-accents__dot--br', <Motif variant="dot" color="var(--color-fluent-yellow)" size={24} />)}
+        <span className="brand-accents__track brand-accents__track--br" />
+      </div>
+    );
+  }
+
+  if (preset === 'subtle') {
+    return (
+      <div className="brand-accents brand-accents--subtle" aria-hidden="true">
+        {wrap('brand-accents__ring--tl', <Motif variant="ring" color="rgba(18, 27, 255, 0.08)" size={140} rings={2} />)}
+        {wrap('brand-accents__spark--tr', <Motif variant="spark" color="var(--color-fluent-yellow)" size={26} />)}
+      </div>
+    );
+  }
+
+  return null;
+}
+
 function BrandLogo({ onClick, label }) {
   return (
     <button type="button" className="brand-logo" onClick={onClick} aria-label={label}>
@@ -477,10 +656,72 @@ function SectionLabel({ children, light, accent }) {
     ? 'var(--color-fluent-yellow)'
     : (light ? 'rgba(255,255,255,0.9)' : 'var(--color-progress-purple)');
   return (
-    <div className="section-label" style={light ? { color: 'rgba(255,255,255,0.9)' } : undefined}>
+    <div className={`section-label${accent === 'yellow' ? ' section-label--yellow-accent' : ''}`} style={light ? { color: 'rgba(255,255,255,0.9)' } : undefined}>
       <Motif variant="dot" color={dotColor} size={8} />
       {children}
     </div>
+  );
+}
+
+function StatusBanner({ variant = 'info', title, children, className = '' }) {
+  return (
+    <div
+      className={`status-banner status-banner--${variant}${className ? ` ${className}` : ''}`}
+      role={variant === 'error' ? 'alert' : 'status'}
+    >
+      {title && <strong className="status-banner__title">{title}</strong>}
+      <div className="status-banner__body">{children}</div>
+    </div>
+  );
+}
+
+function TestimonialQuoteCard({ story }) {
+  return (
+    <article className="testimonial-card reveal-on-scroll">
+      <span className="testimonial-card__mark" aria-hidden="true">"</span>
+      <blockquote className="testimonial-card__quote">{story.quote}</blockquote>
+      <footer className="testimonial-card__footer">
+        <cite className="testimonial-card__name">{story.name}</cite>
+        {story.role && <p className="testimonial-card__role">{story.role}</p>}
+      </footer>
+    </article>
+  );
+}
+
+function PremiumProgramCard({ card, lang, t, setView, price, period }) {
+  const iconMap = { '8-week': 'rocket', '12-week': 'trending-up', 'in-person': 'briefcase' };
+  return (
+    <article className={`program-card-premium program-card-premium--${card.id}${card.featured ? ' program-card-premium--featured' : ''} reveal-on-scroll`}>
+      {card.featured && card.popularBadge && (
+        <span className="program-card-premium__ribbon">{card.popularBadge}</span>
+      )}
+      <div className="program-card-premium__icon" aria-hidden="true">
+        <FeatureIcon name={card.icon || iconMap[card.id] || 'award'} size={24} />
+      </div>
+      <h3 className="program-card-premium__name">{card.name}</h3>
+      {card.idealFor && <p className="program-card-premium__ideal">{card.idealFor}</p>}
+      <div className="program-card-premium__meta">
+        {card.levels && <span>{card.levels}</span>}
+        {card.duration && <span>{card.duration}</span>}
+      </div>
+      <p className="program-card-premium__outcome">{card.outcome || card.tagline}</p>
+      <div className="program-card-premium__footer">
+        <div className="program-card-premium__price">
+          {price || (card.contactPricing ? (lang === 'es' ? 'Contáctanos' : 'Contact us') : '')}
+          {period && <span className="program-card-figma__price-period"> {period}</span>}
+        </div>
+        <div className="program-card-premium__actions">
+          <SiteButton
+            variant={card.featured ? 'primary' : 'secondary'}
+            onWhite
+            style={{ width: '100%' }}
+            onClick={() => handleProgramAction(card.id, setView, 'programs', lang)}
+          >
+            {programCardCta(card, t, lang)}
+          </SiteButton>
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -493,32 +734,79 @@ function reserveSeat(setView, source) {
   goToSection('programs', setView);
 }
 
-function NavBar({ view, setView, lang, setLang, t }) {
+function NavDropdown({ label, menuKey, items, isActiveGroup, onSelect }) {
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!open) return undefined;
+    const close = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('click', close);
+    return () => document.removeEventListener('click', close);
+  }, [open]);
+
+  const active = isActiveGroup(menuKey, items);
+
+  return (
+    <div className={`nav-dropdown${open ? ' nav-dropdown--open' : ''}`} ref={ref}>
+      <button
+        type="button"
+        className={`nav-link nav-dropdown__trigger${active ? ' nav-link--active' : ''}`}
+        aria-expanded={open}
+        aria-haspopup="true"
+        onClick={() => setOpen(!open)}
+      >
+        {label}
+      </button>
+      {open && (
+        <div className="nav-dropdown__menu" role="menu">
+          {items.map(item => (
+            <button
+              key={item.key}
+              type="button"
+              role="menuitem"
+              className="nav-dropdown__item"
+              onClick={() => { onSelect(item); setOpen(false); }}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function NavBar({ view, setView, lang, setLang, t, activeSectionId }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileProgramsOpen, setMobileProgramsOpen] = React.useState(false);
   const a11y = t.a11y || {};
-  const navItems = [
-    { key: 'programs', label: t.nav.programs, type: 'anchor' },
-    { key: 'organizations', label: t.nav.organizations, type: 'anchor' },
-    { key: 'resources', label: t.nav.resources, type: 'route' },
-    { key: 'about', label: t.nav.about, type: 'anchor' },
-    { key: 'faq', label: t.nav.faq, type: 'anchor' },
+  const programsMenu = (t.navMenus && t.navMenus.programs && t.navMenus.programs.items) || [];
+
+  const directNavItems = [
+    { key: 'about', label: t.nav.about, section: 'about' },
+    { key: 'resources', label: t.nav.resources, view: 'resources' },
+    { key: 'contact', label: t.nav.contact, view: 'contact' },
   ];
 
-  const navGo = (item) => {
-    if (item.type === 'route') {
-      setView('resources');
-      window.scrollTo(0, 0);
-    } else {
-      const sectionId = LANDING_SECTIONS[item.key];
-      if (sectionId) {
-        setView('home', true);
-        requestAnimationFrame(() => setTimeout(() => scrollToSection(sectionId), 80));
-      } else {
-        setView(item.key, true);
-      }
-    }
+  const navigateMenuItem = (item) => {
     setMobileOpen(false);
+    if (item.view) {
+      setView(item.view);
+      window.scrollTo(0, 0);
+      return;
+    }
+    if (!item.section) return;
+    const viewKey = Object.prototype.hasOwnProperty.call(LANDING_SECTIONS, item.section)
+      ? item.section
+      : 'home';
+    setView(viewKey, true);
+    requestAnimationFrame(() => setTimeout(() => scrollToSection(item.section), 80));
   };
+
+  const navigateDirect = (item) => navigateMenuItem(item);
 
   const goDiagnostic = () => {
     setView('diagnostico', true);
@@ -531,29 +819,58 @@ function NavBar({ view, setView, lang, setLang, t }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const isActive = (key) => {
-    if (view === 'home') return false;
-    if (key === 'resources') return view === 'resources';
-    if (key === 'programs') return view === 'programs' || view === 'pricing';
-    return view === key;
+  const sectionActive = (section) => {
+    if (view === 'home' && activeSectionId === section) return true;
+    if (view === section) return true;
+    if (section === 'programs' && (view === 'programs' || view === 'pricing')) return true;
+    return false;
   };
+
+  const isProgramsActive = () => programsMenu.some(item => item.section && sectionActive(item.section));
+
+  const isDirectActive = (item) => {
+    if (item.view) return view === item.view;
+    if (item.section) return sectionActive(item.section);
+    return false;
+  };
+
+  const isHomeActive = view === 'home' && !activeSectionId;
 
   return (
     <header className={`site-header${mobileOpen ? ' nav-mobile-open' : ''}`}>
       <div className="site-header__inner">
-        <BrandLogo onClick={goTop} label={a11y.homeLink} />
+        <div className="site-header__brand">
+          <BrandLogo onClick={goTop} label={a11y.homeLink} />
+        </div>
 
         <nav className="site-header__nav" aria-label={a11y.mainNav}>
-          {navItems.map(item => (
-            <NavLink key={item.key} active={isActive(item.key)} onClick={() => navGo(item)}>{item.label}</NavLink>
+          <NavLink active={isHomeActive} onClick={goTop}>{t.nav.home}</NavLink>
+          <NavDropdown
+            menuKey="programs"
+            label={t.nav.programs}
+            items={programsMenu}
+            isActiveGroup={() => isProgramsActive()}
+            onSelect={navigateMenuItem}
+          />
+          {directNavItems.map(item => (
+            <NavLink key={item.key} active={isDirectActive(item)} onClick={() => navigateDirect(item)}>
+              {item.label}
+            </NavLink>
           ))}
         </nav>
 
         <div className="site-header__actions">
-          <LangSwitch lang={lang} setLang={setLang} a11y={a11y} />
-          <SiteButton variant="primary" size="sm" className="nav-diagnostic-cta" onClick={goDiagnostic}>
-            <span className="nav-diagnostic-cta__full">{t.nav.bookDiagnostic}</span>
-            <span className="nav-diagnostic-cta__short" aria-hidden="true">{t.nav.bookDiagnosticShort || t.nav.bookDiagnostic}</span>
+          <LangSwitch lang={lang} setLang={setLang} a11y={a11y} variant="text" />
+          <SiteButton
+            variant="primary"
+            size="sm"
+            className="nav-diagnostic-cta"
+            inverse={view === 'home'}
+            onWhite={view !== 'home'}
+            aria-label={t.nav.bookDiagnostic}
+            onClick={goDiagnostic}
+          >
+            {t.nav.bookDiagnosticShort}
           </SiteButton>
           <button
             type="button"
@@ -569,12 +886,39 @@ function NavBar({ view, setView, lang, setLang, t }) {
 
         {mobileOpen && (
           <nav id="mobile-nav" className="site-header__nav-mobile" aria-label={a11y.mobileNav}>
-            {navItems.map(item => (
-              <NavLink key={`m-${item.key}`} active={isActive(item.key)} onClick={() => navGo(item)}>{item.label}</NavLink>
+            <NavLink active={isHomeActive} onClick={goTop}>{t.nav.home}</NavLink>
+            <div className="nav-mobile-group">
+              <button
+                type="button"
+                className="nav-mobile-group__trigger"
+                aria-expanded={mobileProgramsOpen}
+                onClick={() => setMobileProgramsOpen(!mobileProgramsOpen)}
+              >
+                {t.nav.programs}
+              </button>
+              {mobileProgramsOpen && (
+                <div className="nav-mobile-group__items">
+                  {programsMenu.map(item => (
+                    <button
+                      key={item.key}
+                      type="button"
+                      className="nav-mobile-group__item"
+                      onClick={() => navigateMenuItem(item)}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            {directNavItems.map(item => (
+              <NavLink key={`m-${item.key}`} active={isDirectActive(item)} onClick={() => navigateDirect(item)}>
+                {item.label}
+              </NavLink>
             ))}
             <div className="site-header__nav-mobile-cta">
-              <SiteButton variant="primary" size="md" style={{ width: '100%' }} onClick={goDiagnostic}>
-                {t.nav.bookDiagnostic}
+              <SiteButton variant="primary" size="md" style={{ width: '100%' }} aria-label={t.nav.bookDiagnostic} onClick={goDiagnostic}>
+                {t.nav.bookDiagnosticShort}
               </SiteButton>
             </div>
           </nav>
@@ -640,27 +984,35 @@ function NewsletterSignup({ f }) {
 function Footer({ setView, lang, setLang, t }) {
   const f = t.footer;
   const a11y = t.a11y || {};
-  const goSection = (section) => setView(section, true);
   const goLegal = (v) => { setView(v); window.scrollTo(0, 0); };
 
   const footerCols = [
-    { title: f.colPrograms, links: f.colProgramsLinks, action: () => goSection('programs') },
+    {
+      title: f.colExplore,
+      links: f.colExploreLinks,
+      actions: [
+        () => goToSection('professionals', setView),
+        () => goToSection('organizations', setView),
+        () => goToSection('programs', setView),
+        () => goToSection('certification', setView),
+      ],
+    },
     {
       title: f.colResources,
       links: f.colResourcesLinks,
       actions: [
-        () => setView('resources'),
-        () => goSection('faq'),
-        () => goLegal('terms'),
-        () => setView('contact'),
+        () => { setView('resources'); window.scrollTo(0, 0); },
+        () => setView('diagnostico', true),
+        () => goToSection('faq', setView),
+        () => { setView('contact'); window.scrollTo(0, 0); },
       ],
     },
     {
       title: f.colCompany,
       links: f.colCompanyLinks,
       actions: [
-        () => setView('about'),
-        () => goSection('programs'),
+        () => goToSection('about', setView),
+        () => { setView('home', true); requestAnimationFrame(() => setTimeout(() => scrollToSection('success-stories'), 80)); },
         () => goLegal('privacy'),
         () => goLegal('terms'),
       ],
@@ -691,21 +1043,56 @@ function Footer({ setView, lang, setLang, t }) {
         <div className="site-footer__bottom-links">
           <FooterLink onClick={() => goLegal('privacy')}>{f.privacy}</FooterLink>
           <FooterLink onClick={() => goLegal('terms')}>{f.terms}</FooterLink>
-          <LangSwitch lang={lang} setLang={setLang} a11y={a11y} variant="pill" />
         </div>
       </div>
     </footer>
   );
 }
 
-function PhotoRingFrame({ photoKey, alt, size = 'hero' }) {
+function TrustBar({ h }) {
+  const items = h.trustLogos || h.trustCompanies || [];
+  const label = h.trustLabel || h.trustCompaniesLabel;
+  if (!items.length || !label) return null;
   return (
-    <div className={`photo-ring-frame photo-ring-frame--${size}`}>
-      <div className="photo-ring-frame__rings" aria-hidden="true">
-        <span className="photo-ring-frame__ring photo-ring-frame__ring--1" />
-        <span className="photo-ring-frame__ring photo-ring-frame__ring--2" />
-        <span className="photo-ring-frame__ring photo-ring-frame__ring--3" />
+    <div className="trust-bar trust-bar--mockup" aria-label={label}>
+      <div className="container trust-bar__inner">
+        <p className="trust-bar__label">{label}</p>
+        <div className="trust-bar__logos" role="list">
+          {items.map(item => {
+            const entry = typeof item === 'string' ? { name: item } : item;
+            const key = entry.name || entry.src;
+            const sizeClass = entry.size ? ` trust-bar__logo--${entry.size}` : '';
+            return (
+              <span key={key} className={`trust-bar__logo${entry.src ? ' trust-bar__logo--image' : ' trust-bar__logo--text'}${sizeClass}`} role="listitem">
+                {entry.src ? (
+                  <img src={entry.src} alt={entry.name} loading="lazy" decoding="async" />
+                ) : (
+                  entry.name
+                )}
+              </span>
+            );
+          })}
+        </div>
       </div>
+    </div>
+  );
+}
+
+function PhotoRingFrame({ photoKey, alt, size = 'hero', variant = 'rings' }) {
+  return (
+    <div className={`photo-ring-frame photo-ring-frame--${size}${variant === 'arch' ? ' photo-ring-frame--arch' : ''}`}>
+      {variant === 'arch' ? (
+        <div className="photo-arch-frame" aria-hidden="true">
+          <span className="photo-arch-frame__arch" />
+          <span className="photo-arch-frame__dot" />
+        </div>
+      ) : (
+        <div className="photo-ring-frame__rings" aria-hidden="true">
+          <span className="photo-ring-frame__ring photo-ring-frame__ring--1" />
+          <span className="photo-ring-frame__ring photo-ring-frame__ring--2" />
+          <span className="photo-ring-frame__ring photo-ring-frame__ring--3" />
+        </div>
+      )}
       <div className="photo-ring-frame__photo">
         <SitePhoto photoKey={photoKey} alt={alt || ''} showCredit={false} />
       </div>
@@ -739,7 +1126,7 @@ function CheckList({ items, checkLabel }) {
 
 function SitePhoto({ photoKey, alt, className, showCredit }) {
   const photo = window.SITE_PHOTOS && window.SITE_PHOTOS[photoKey];
-  if (!photo) return <image-slot shape="rounded" radius="12" placeholder={alt || ''}></image-slot>;
+  if (!photo || !photo.src) return <image-slot shape="rounded" radius="12" placeholder={alt || ''}></image-slot>;
   const displayCredit = showCredit === true || (showCredit !== false && photo.credit && !photo.aiGenerated);
   return (
     <figure className={`site-photo${className ? ' ' + className : ''}`}>
@@ -765,29 +1152,6 @@ function MetaLabel({ children, accent }) {
 
 function PartnerLogosBar({ h, a11y }) {
   return <IndustryBar h={h} a11y={a11y} />;
-}
-
-function WelcomeVideoSection({ h, a11y }) {
-  const embed = INTRO_VIDEO_EMBED;
-  if (!embed) return null;
-  return (
-    <section id="intro" className="section section-page welcome-video-section">
-      <div className="container">
-        <div className="welcome-video__grid">
-          <div>
-            <SectionLabel>{h.welcomeLabel}</SectionLabel>
-            <h2 className="welcome-video__title">{h.welcomeTitle}</h2>
-            <p className="welcome-video__story">{h.welcomeBody}</p>
-          </div>
-          <div className="welcome-video__card">
-            <div className="video-embed-wrap welcome-video__embed">
-              <iframe src={embed} title={h.welcomeVideoLabel} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
 }
 
 function IndustryBar({ h, a11y }) {
@@ -838,106 +1202,169 @@ function ProgramBannerSection({ h }) {
   );
 }
 
-function ApproachSection({ h, a11y }) {
+function HeroApproachList({ items }) {
   return (
-    <section id="method" className="section section-page approach-section">
-      <div className="approach-section__shape" aria-hidden="true">
-        <Motif variant="blob" color="var(--color-progress-purple)" size={200} style={{ opacity: 0.12 }} />
-      </div>
-      <div className="container section-content">
-        <SectionLabel>{h.approachLabel}</SectionLabel>
-
-        <div className="approach-intro">
-          <h2>{h.whatIsTitle}</h2>
-          <p className="approach-section__lead">{h.whatIsLead}</p>
-          <div className="what-is-card">
-            <h3>{h.whatIsCardTitle}</h3>
-            <CheckList items={h.whatIsItems} checkLabel={a11y?.included || 'Included'} />
-          </div>
-        </div>
-
-        <div className="approach-journey">
-          <h3 className="approach-journey__title">{h.journeyTitle}</h3>
-          <JourneyTimeline steps={h.journeySteps} />
-        </div>
-      </div>
-    </section>
+    <ul className="hero-approach-list">
+      {items.map((item, i) => (
+        <li key={i}>
+          {typeof item === 'string' ? item : (
+            <>
+              {item.text}{' '}
+              {item.link && (
+                <a href={item.link} className="hero-approach-link" onClick={(e) => {
+                  if (item.link.startsWith('#')) {
+                    e.preventDefault();
+                    scrollToSection(item.link.slice(1));
+                  }
+                }}>{item.linkLabel}</a>
+              )}
+            </>
+          )}
+        </li>
+      ))}
+    </ul>
   );
 }
 
-function SuccessStoriesSection({ h, a11y }) {
-  const embed = STORY_VIDEO_EMBED;
+function ForProfessionalsSection({ h, a11y }) {
   return (
-    <section id="success-stories" className="section section-white stories-section">
-      <div className="container">
-        <SectionLabel>{h.successLabel}</SectionLabel>
-        <h2 className="text-center-block">{h.successTitle}</h2>
+    <SectionBlock id="professionals" tone="white" labelledBy="professionals-heading" className="approach-section approach-section--center">
+      <SectionHeader label={h.professionalsLabel} title={h.professionalsTitle} titleId="professionals-heading" lead={h.professionalsLead} />
+      <div className="ds-card ds-card--accent-blue approach-what-is">
+        <h3 className="approach-what-is__title">{h.whatIsTitle}</h3>
+        {h.whatIsLead && <p className="approach-what-is__lead">{h.whatIsLead}</p>}
+        <ul className="approach-what-is__grid" aria-label={a11y?.included || 'Included'}>
+          {(h.whatIsItems || []).map(item => (
+            <li key={item} className="approach-what-is__item">
+              <span className="approach-what-is__check" aria-hidden="true">✔</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </SectionBlock>
+  );
+}
 
-        {embed && (
-          <div className="success-stories__featured">
-            <h3>{h.promoVideoTitle}</h3>
-            <p className="success-stories__video-intro">{h.promoVideoSubtitle}</p>
-            <div className="video-embed-wrap video-embed-wrap--flat">
-              <iframe src={embed} title={h.promoVideoTitle} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-            </div>
+function AssessSection({ h, setView }) {
+  return (
+    <SectionBlock id="assess" tone="white" labelledBy="assess-heading" className="assess-section assess-section--center">
+      <SectionHeader label={h.assessLabel} title={h.assessTitle} titleId="assess-heading" lead={h.assessLead} accent="yellow" />
+      <div className="ds-card ds-card--lg assess-panel">
+        <EnglishLevelPath levels={h.englishLevelsPlain} label={h.assessLabel} />
+        <div className="cta-row cta-row--center assess-panel__cta">
+          <SiteButton variant="primary" size="lg" onWhite onClick={() => openDiagnostic('assess')}>{h.ctaAssess || h.ctaBookDiagnostic}</SiteButton>
+          <SiteButton variant="ghost" size="lg" onWhite onClick={() => goToSection('programs', setView)}>{h.assessCta}</SiteButton>
+        </div>
+      </div>
+    </SectionBlock>
+  );
+}
+
+function HowItWorksSection({ h }) {
+  return (
+    <SectionBlock id="how-it-works" tone="white" labelledBy="how-it-works-heading" className="how-it-works-section how-it-works-section--center">
+      <div className="approach-split">
+        <div className="approach-split__content">
+          <SectionHeader label={h.methodSectionLabel} title={h.methodSectionTitle} titleId="how-it-works-heading" accent="yellow" />
+          <ul className="tag-list tag-list--center method-pills">
+            {(h.methodologyItems || []).map(item => <li key={item}>{item}</li>)}
+          </ul>
+          <div className="approach-journey how-it-works-section__journey">
+            <h3 className="approach-journey__title">{h.journeyTitle}</h3>
+            <JourneyTimeline steps={h.journeySteps} />
           </div>
-        )}
+        </div>
+      </div>
+    </SectionBlock>
+  );
+}
 
-        <div className="story-grid story-grid--figma">
-          {h.successStories.map(story => (
-            <Card key={story.name} className="story-card story-card--figma">
-              <p className="story-card__role">{story.role}</p>
-              <blockquote className="story-card__quote">{story.quote}</blockquote>
-              <p className="story-card__outcome"><strong>{story.name} —</strong> {story.outcome}</p>
-            </Card>
+function AboutPlaceholderSection({ t, lang }) {
+  const a = t.about;
+  const h = t.home;
+  return (
+    <SectionBlock id="about" tone="white" compact labelledBy="about-heading" className="about-section about-section--center">
+      <SectionHeader label={h.aboutLabel || a.label} title={h.aboutTitle || a.title} titleId="about-heading" lead={h.aboutLead || h.welcomeBody || a.subtitle} accent="yellow" />
+    </SectionBlock>
+  );
+}
+
+function SuccessStoriesSection({ h }) {
+  const stories = h.successStories || [];
+  return (
+    <SectionBlock id="success-stories" tone="white" labelledBy="success-stories-heading" className="stories-section stories-section--center">
+      <SectionHeader
+        label={h.successLabel}
+        title={h.successTitle}
+        titleId="success-stories-heading"
+        lead={h.successIntro}
+        accent="yellow"
+      />
+      {stories.length > 0 && (
+        <div className="testimonial-cards-grid">
+          {stories.map(story => (
+            <TestimonialQuoteCard key={`${story.name}-${story.quote.slice(0, 24)}`} story={story} />
           ))}
         </div>
-      </div>
-    </section>
+      )}
+    </SectionBlock>
   );
 }
 
-function CertificationHomeSection({ h, setView, a11y }) {
+function CertificationHomeSection({ h, setView, t, lang, a11y }) {
+  const p = t.programs;
   const active = new Set(h.certActiveLevels || []);
   return (
-    <section id="certification" className="section cert-section--dark">
-      <div className="container">
-        <div className="cert-section__grid">
-          <div>
-            <SectionLabel light accent="yellow">{h.certSectionLabel}</SectionLabel>
-            <h2>{h.certSectionTitle}</h2>
-            <p className="cert-section__body">{h.certSectionBody}</p>
-            <ul className="cefr-pills" aria-label={a11y?.cefrLevels || 'CEFR levels'}>
-              {(h.certLevels || []).map(level => (
-                <li key={level} className={`cefr-pill${active.has(level) ? ' cefr-pill--active' : ''}`}>{level}</li>
-              ))}
-            </ul>
+    <SectionBlock id="certification" tone="lavender" labelledBy="certification-heading" className="cert-section cert-section--light cert-section--center">
+      <SectionHeader label={h.certSectionLabel} title={h.certSectionTitle} titleId="certification-heading" lead={h.certSectionBody} accent="yellow" />
+      <div className="cert-section__chips">
+        {h.certSkills?.length > 0 && (
+          <ul className="tag-list tag-list--center cert-tag-list">
+            {h.certSkills.map(skill => <li key={skill}>{skill}</li>)}
+          </ul>
+        )}
+        {(h.certLevels?.length > 0) && (
+          <ul className="level-badges level-badges--center cert-level-badges" aria-label={a11y?.englishLevels || 'English proficiency levels'}>
+            {h.certLevels.map(level => (
+              <li key={level} className={`level-badge${active.has(level) ? ' level-badge--active' : ''}`}>{level}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <div className="cert-only-banner cert-only-banner--in-section">
+        <div className="cert-only-banner__copy">
+          <h3>{h.certBannerTitle || p.certStandalone.name}</h3>
+          <p>{h.certBannerDesc || p.certStandalone.desc}</p>
+        </div>
+        <div className="cert-only-banner__cta">
+          <div className="cert-only-banner__price">
+            <span>{h.certBannerPrice || p.certStandalone.price}</span>
+            {h.certBannerPriceNote && <small>{h.certBannerPriceNote}</small>}
           </div>
-          <div className="cert-section__methodology">
-            <h3>{h.certMethodologyTitle}</h3>
-            <ul className="cert-methodology-list">
-              {(h.methodologyItems || []).map(item => <li key={item}>{item}</li>)}
-            </ul>
-          </div>
+          <SiteButton
+            variant="primary"
+            size="sm"
+            onWhite
+            onClick={() => handleProgramAction('cert-only', setView, 'certification', lang)}
+          >
+            {planCtaLabel('cert-only', t)}
+          </SiteButton>
         </div>
       </div>
-    </section>
+    </SectionBlock>
   );
 }
 
-function FinalCTASection({ h }) {
+function FinalCTASection({ h, setView }) {
   return (
-    <section id="diagnostico" className="final-reserve-cta final-cta-band">
-      <div className="container content-narrow section-content">
-        <SectionLabel light accent="yellow">{h.finalCtaLabel}</SectionLabel>
-        <h2>{h.finalCtaTitle}</h2>
-        <p className="final-cta-band__p">{h.finalCtaBody}</p>
-        <p className="final-cta-band__closing">{h.finalCtaClosing}</p>
-        <div className="final-cta-band__buttons cta-row cta-row--center">
-          <SiteButton variant="primary" size="lg" inverse onClick={() => openDiagnostic('final-cta')}>{h.ctaAssessment}</SiteButton>
-        </div>
+    <SectionBlock id="get-started" tone="dark" compact labelledBy="final-cta-heading" className="final-cta-band">
+      <SectionHeader label={h.finalCtaLabel} title={h.finalCtaTitle} titleId="final-cta-heading" lead={h.finalCtaBody} light accent="yellow" />
+      <div className="cta-row cta-row--center final-cta-band__primary">
+        <SiteButton variant="primary" size="lg" inverse onClick={() => openDiagnostic('final-cta')}>{h.ctaAssess || h.ctaAssessment}</SiteButton>
+        <SiteButton variant="secondary" size="lg" inverse onClick={() => goToSection('programs', setView)}>{h.ctaSeePrograms || h.ctaFindProgram}</SiteButton>
       </div>
-    </section>
+    </SectionBlock>
   );
 }
 
@@ -957,106 +1384,91 @@ function LandingPage({ setView, t, lang }) {
 
   return (
     <div style={{ fontFamily: 'var(--font-body)' }}>
-      <section id="top" className="hero-section hero-section--light hero-section--figma section-white">
+      <section id="top" className="hero-section hero-section--navy hero-section--accented hero-section--figma hero-section--mockup" aria-labelledby="hero-heading">
         <div className="hero-inner">
           <div className="hero-copy">
-            {h.heroBadge && <span className="hero-cohort-pill">{h.heroBadge}</span>}
+            {(h.heroKicker || h.heroBadge) && (
+              <p className="hero-kicker">{h.heroKicker || h.heroBadge}</p>
+            )}
             <div className="hero-headline-wrap">
-              <h1>{h.headline}</h1>
-              <div className="hero-headline-spark" aria-hidden="true">
-                <Motif variant="spark" color="var(--color-fluent-yellow)" size={36} />
-              </div>
+              <h1 id="hero-heading">{h.headline}<span className="title-gold-dot" aria-hidden="true">.</span></h1>
             </div>
-            <div className="hero-body-copy">
-              {(h.heroBody || []).map((para, i) => (
-                <p key={i} className={h.heroBodyBoldIndex === i ? 'hero-body-copy__bold' : ''}>{para}</p>
+            {h.heroSubhead && <p className="hero-subhead">{h.heroSubhead}</p>}
+            <div className="hero-body-copy hero-body-copy--compact">
+              {(h.heroBody || []).slice(0, 1).map((para, i) => (
+                <p key={i}>{para}</p>
               ))}
             </div>
-            <div className="cta-row">
-              <SiteButton variant="primary" size="lg" onClick={() => goToSection('programs', setView)}>{h.ctaSeePrograms}</SiteButton>
-              <SiteButton variant="secondary" size="lg" onClick={() => openDiagnostic('hero')}>{h.ctaBookDiagnostic}</SiteButton>
+            <div className="cta-row hero-copy__cta">
+              <SiteButton variant="primary" size="lg" inverse onClick={() => openDiagnostic('hero')}>{h.ctaAssess || h.ctaBookDiagnostic}</SiteButton>
+              <SiteButton variant="secondary" size="lg" inverse onClick={() => goToSection('programs', setView)}>{h.ctaFindProgram || h.ctaSeePrograms}</SiteButton>
             </div>
-            {h.cohortPill && <p className="hero-fine-print">{h.cohortPill}</p>}
+            <aside className="hero-cohort-notice" aria-label={h.cohortCalendarLabel}>
+              <FeatureIcon name="calendar" size={20} />
+              <div>
+                <p className="hero-cohort-notice__label">{h.cohortCalendarLabel}</p>
+                <p className="hero-cohort-notice__meta">
+                  <button type="button" className="hero-cohort-notice__link" onClick={() => openCalendly('cohort-calendar')}>{h.cohortCalendarCta}</button>
+                </p>
+              </div>
+            </aside>
           </div>
           <div className="hero-media">
-            <PhotoRingFrame photoKey="hero" alt="" size="hero" />
+            <PhotoRingFrame photoKey="hero" alt="" size="hero" variant="arch" />
           </div>
         </div>
       </section>
 
-      <WelcomeVideoSection h={h} a11y={a11y} />
-      <ApproachSection h={h} a11y={a11y} />
-      <ProgramsPricingSection setView={setView} t={t} lang={lang} />
-      <OrganizationsSection setView={setView} t={t} />
-      <CertificationHomeSection h={h} setView={setView} a11y={a11y} />
-      <SuccessStoriesSection h={h} a11y={a11y} />
-      <AboutHomeSection t={t} />
-      <FAQSection t={t} setView={setView} />
-      <FinalCTASection h={h} />
-    </div>
-  );
-}
+      <TrustBar h={h} />
 
-function AboutHomeSection({ t }) {
-  const a = t.about;
-  return (
-    <section id="about" className="section section-page">
-      <div className="container">
-        <SectionLabel>{a.label || t.nav.about}</SectionLabel>
-        <h2 className="about-home__title">{a.title}</h2>
-        <p className="about-home__subtitle">{a.subtitle}</p>
-        <div className="about-grid">
-          <div>
-            <p className="about-intro">{a.intro}</p>
-            <Card className="about-mission-card">
-              <h3>{a.missionTitle}</h3>
-              <p>{a.missionDesc}</p>
-            </Card>
-            <h3 className="about-approach-title">{a.approachTitle}</h3>
-            <ul className="about-approach-list">
-              {a.approachItems.map(item => <li key={item}>{item}</li>)}
-            </ul>
-          </div>
-          <div className="about-photo-wrap">
-            <PhotoRingFrame photoKey="teresa" alt="Teresa — founder" size="about" />
-          </div>
-        </div>
-      </div>
-    </section>
+      <HowItWorksSection h={h} />
+      <ForProfessionalsSection h={h} a11y={a11y} />
+      <OrganizationsSection setView={setView} t={t} />
+      <AssessSection h={h} setView={setView} />
+      <ProgramsPricingSection setView={setView} t={t} lang={lang} />
+      <CertificationHomeSection h={h} setView={setView} t={t} lang={lang} a11y={a11y} />
+      <AboutPlaceholderSection t={t} lang={lang} />
+      <SuccessStoriesSection h={h} />
+      <FAQSection t={t} />
+      <FinalCTASection h={h} setView={setView} />
+    </div>
   );
 }
 
 function OrganizationsSection({ setView, t }) {
   const o = t.organizations;
+  const h = t.home;
 
   return (
-    <section id="organizations" className="section section-page org-section">
-      <div className="container">
-        <SectionLabel>{o.label}</SectionLabel>
-
-        <div className="org-section__header">
-          <h2 className="org-section__title">{o.title}</h2>
-          <p className="org-section__lead">{o.subtitle}</p>
+    <SectionBlock id="organizations" tone="navy" labelledBy="organizations-heading" className="org-section org-section--impact">
+      <div className="impact-split">
+        <div className="impact-split__intro">
+          <SectionHeader align="left" label={o.label} title={o.title} titleId="organizations-heading" lead={o.subtitle} light accent="yellow" />
         </div>
-
-        <div className="org-section__copy">
-          <p className="org-section__program">{o.programName}</p>
-          <ul className="org-section__focus">
-            {(o.focusAreas || []).map(item => (
-              <li key={item.title}>
-                <strong>{item.title}</strong>
-                <span>{item.desc}</span>
-              </li>
+        {(h.impactStats || []).length > 0 && (
+          <div className="impact-stats impact-stats--org">
+            {h.impactStats.map(stat => (
+              <div key={stat.label} className="impact-stats__item">
+                <strong>{stat.value}</strong>
+                <span>{stat.label}</span>
+              </div>
             ))}
-          </ul>
-        </div>
-
-        <div className="org-section__cta cta-row">
-          <SiteButton variant="primary" onClick={() => goToSection('contact', setView)}>{o.ctaContact}</SiteButton>
-          <SiteButton variant="secondary" onClick={() => openDiagnostic('organizations')}>{o.ctaDiagnostic}</SiteButton>
-        </div>
+          </div>
+        )}
       </div>
-    </section>
+      <ul className="org-section__focus org-section__focus--impact">
+        {(o.focusAreas || []).map(item => (
+          <li key={item.title} className="org-focus-card reveal-on-scroll">
+            <strong>{item.title}</strong>
+            <span>{item.desc}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="cta-row cta-row--center org-section__cta">
+        <SiteButton variant="primary" inverse onClick={() => goToSection('programs', setView)}>{o.ctaPrograms || o.ctaContact}</SiteButton>
+        <SiteButton variant="secondary" inverse onClick={() => goToSection('contact', setView)}>{o.ctaContact}</SiteButton>
+      </div>
+    </SectionBlock>
   );
 }
 
@@ -1066,75 +1478,60 @@ function ProgramsPricingSection({ setView, t, lang }) {
   const cards = h.programCards || [];
 
   return (
-    <section id="programs" className="section section-white programs-figma">
-      <div className="programs-figma__shape" aria-hidden="true">
-        <Motif variant="blob" color="var(--color-bridge-blue)" size={220} style={{ opacity: 0.08 }} />
+    <SectionBlock id="programs" tone="white" labelledBy="programs-heading" className="programs-figma programs-figma--center">
+      <SectionHeader
+        label={t.nav.programs}
+        title={p.title}
+        titleId="programs-heading"
+        lead={h.programsSectionSubtitle || p.subtitle}
+        accent="yellow"
+      />
+
+      <div className="program-cards program-cards--premium">
+        {cards.map(card => {
+          const catalog = pricingProduct(card.id);
+          const price = window.PB_PRICING_HELPERS.displayPrice(card.id, lang);
+          const period = catalog && catalog.period && (catalog.period[lang] || catalog.period.en);
+          return (
+            <PremiumProgramCard
+              key={card.id}
+              card={card}
+              lang={lang}
+              t={t}
+              setView={setView}
+              price={price}
+              period={period}
+            />
+          );
+        })}
       </div>
-      <div className="container section-content">
-        <div className="section-header programs-section-header">
-          <h2>{h.programsSectionTitle || p.title}</h2>
-          <p>{h.programsSectionSubtitle || p.subtitle}</p>
-          {h.contentPendingNote && <p className="content-pending-inline">{h.contentPendingNote}</p>}
-        </div>
 
-        <div className="program-cards program-cards--figma">
-          {cards.map(card => {
-            const price = window.PB_PRICING_HELPERS.displayPrice(card.id, lang);
-            return (
-              <div key={card.id} className={`program-card-figma${card.featured ? ' program-card-figma--featured' : ''}`}>
-                {card.featured && card.popularBadge && (
-                  <div className="program-card-figma__badge">{card.popularBadge}</div>
-                )}
-                <p className="program-card-figma__duration">{card.duration}</p>
-                <h3>{card.name}</h3>
-                <p className="program-card-figma__tagline">{card.tagline}</p>
-                <ul className="program-card-figma__features">
-                  {card.features.map(f => <li key={f}>{f}</li>)}
-                </ul>
-                <div className="program-card-figma__price">
-                  {price || (card.contactPricing ? (lang === 'es' ? 'Contáctanos' : 'Contact us') : '')}
-                </div>
-                <SiteButton
-                  variant={card.featured ? 'primary' : 'secondary'}
-                  style={{ width: '100%' }}
-                  onClick={() => handleProgramAction(card.id, setView, 'programs', lang)}
-                >
-                  {planCtaLabel(card.id, t)}
-                </SiteButton>
-              </div>
-            );
-          })}
-        </div>
-
-        {h.programsGuarantee && (
-          <p className="programs-guarantee">{h.programsGuarantee}</p>
-        )}
-
-        <div className="cert-only-banner">
-          <div>
-            <h3>{h.certBannerTitle || p.certStandalone.name}</h3>
-            <p>{h.certBannerDesc || p.certStandalone.desc}</p>
-          </div>
-          <div className="cert-only-banner__cta">
-            <div className="cert-only-banner__price">
-              <span>{h.certBannerPrice || p.certStandalone.price}</span>
-              {h.certBannerPriceNote && <small>{h.certBannerPriceNote}</small>}
-            </div>
-            <SiteButton variant="secondary" size="sm"
-              onClick={() => handleProgramAction('cert-only', setView, 'programs', lang)}>
-              {planCtaLabel('cert-only', t)}
-            </SiteButton>
-          </div>
-        </div>
-
+      <div className="programs-trust-row">
+        <button type="button" className="programs-trust-row__item" onClick={() => goToSection('contact', setView)}>
+          <FeatureIcon name="briefcase" size={18} />
+          {h.corporateInquiry || (lang === 'es' ? 'Consulta corporativa' : 'Corporate inquiry')}
+        </button>
+        <button type="button" className="programs-trust-row__item" onClick={() => goToSection('contact', setView)}>
+          <FeatureIcon name="gift" size={18} />
+          {h.giftEnrollment || (lang === 'es' ? 'Regalar inscripción' : 'Gift enrollment')}
+        </button>
+        <span className="programs-trust-row__item programs-trust-row__item--static">
+          <FeatureIcon name="lock" size={18} />
+          {h.secureCheckout || (lang === 'es' ? 'Pago seguro' : 'Secure checkout')}
+        </span>
       </div>
-    </section>
+
+      {h.programsGuarantee && (
+        <p className="programs-guarantee">{h.programsGuarantee}</p>
+      )}
+    </SectionBlock>
   );
 }
 
-function FAQSection({ t, setView }) {
+function FAQSection({ t }) {
   const f = t.faq;
-  const [open, setOpen] = React.useState(() => new Set());
+  const defaultOpen = React.useMemo(() => new Set((f.items || []).slice(0, 2).map(item => item.q)), [f.items]);
+  const [open, setOpen] = React.useState(() => defaultOpen);
 
   const toggle = (key) => {
     setOpen(prev => {
@@ -1145,18 +1542,10 @@ function FAQSection({ t, setView }) {
     });
   };
 
-  const goResources = () => {
-    setView('resources');
-    window.scrollTo(0, 0);
-  };
-
   return (
-    <section id="faq" className="section section-white">
-      <div className="container">
-        <div className="section-header">
-          <h2>{f.title}</h2>
-        </div>
-        <div className="faq-list">
+    <SectionBlock id="faq" tone="white" labelledBy="faq-heading">
+      <SectionHeader label={f.label || 'FAQ'} title={f.title} titleId="faq-heading" />
+      <div className="faq-list">
           {f.items.map((item, i) => {
             const key = item.q;
             const isOpen = open.has(key);
@@ -1175,7 +1564,13 @@ function FAQSection({ t, setView }) {
                   <span className="faq-item__question">{item.q}</span>
                   <span className="faq-item__icon" aria-hidden="true">{isOpen ? '−' : '+'}</span>
                 </button>
-                <div id={panelId} className="faq-item__panel" role="region" aria-labelledby={triggerId}>
+                <div
+                  id={panelId}
+                  className="faq-item__panel"
+                  role="region"
+                  aria-labelledby={triggerId}
+                  hidden={!isOpen}
+                >
                   <div className="faq-item__panel-inner">
                     <p>{item.a}</p>
                   </div>
@@ -1184,26 +1579,26 @@ function FAQSection({ t, setView }) {
             );
           })}
         </div>
-        {f.resourcesTeaser && (
-          <div className="faq-resources-teaser">
-            <p>{f.resourcesTeaser}</p>
-            <SiteButton variant="secondary" onClick={goResources}>{f.resourcesLink}</SiteButton>
-          </div>
-        )}
-      </div>
-    </section>
+    </SectionBlock>
   );
 }
 
-function ContactPage({ t }) {
+function ContactPage({ t, setView }) {
+  const crumbs = [
+    { label: t.breadcrumbs.home, onClick: () => goToSection('top', setView) },
+    { label: t.pageTitles.contact },
+  ];
   return (
     <div style={{ fontFamily: 'var(--font-body)' }}>
-      <ContactSection t={t} />
+      <div className="container page-shell">
+        <PageBreadcrumbs t={t} items={crumbs} />
+      </div>
+      <ContactSection t={t} standalone />
     </div>
   );
 }
 
-function ContactSection({ t }) {
+function ContactSection({ t, standalone }) {
   const c = t.contact;
   const [sent, setSent] = React.useState(false);
   const [error, setError] = React.useState('');
@@ -1240,32 +1635,38 @@ function ContactSection({ t }) {
     }
   };
 
+  const HeadingTag = standalone ? 'h1' : 'h2';
   return (
-    <section id="contact" className="section section-white contact-section">
-      <div className="container">
-        <div className="contact-section__header">
-          <SectionLabel>{c.label}</SectionLabel>
-          <h2>{c.title}</h2>
-          <p>{c.subtitle}</p>
-        </div>
-        <div className="contact-form-wrap">
+    <SectionBlock id="contact" tone="white" className="contact-section">
+      <header className="section-block__header">
+        <SectionLabel>{c.label}</SectionLabel>
+        <HeadingTag className="section-block__title">{c.title}</HeadingTag>
+        <p className="section-block__lead">{c.subtitle}</p>
+      </header>
+      <div className="contact-form-wrap">
           {sent ? (
-            <p className="contact-form__success">{c.formSuccess}</p>
+            <StatusBanner variant="success" title={c.formSuccessTitle || null}>
+              {c.formSuccess}
+            </StatusBanner>
           ) : (
             <form className="contact-form" onSubmit={submit}>
               <label className="contact-form__field">
                 <span className="contact-form__label">{c.formName}</span>
-                <input name="name" required placeholder={c.formNamePlaceholder} />
+                <input name="name" required placeholder={c.formNamePlaceholder} aria-invalid={error ? 'true' : undefined} />
               </label>
               <label className="contact-form__field">
                 <span className="contact-form__label">{c.formEmail}</span>
-                <input name="email" type="email" required placeholder={c.formEmailPlaceholder} />
+                <input name="email" type="email" required placeholder={c.formEmailPlaceholder} aria-invalid={error ? 'true' : undefined} />
               </label>
               <label className="contact-form__field">
                 <span className="contact-form__label">{c.formComment}</span>
-                <textarea name="comment" required rows={5} placeholder={c.formCommentPlaceholder} />
+                <textarea name="comment" required rows={5} placeholder={c.formCommentPlaceholder} aria-invalid={error ? 'true' : undefined} />
               </label>
-              {error && <p className="contact-form__error">{error}</p>}
+              {error && (
+                <StatusBanner variant="error" title={c.formErrorTitle || null} className="contact-form__status">
+                  {error}
+                </StatusBanner>
+              )}
               <SiteButton variant="primary" type="submit" disabled={submitting} style={{ width: '100%' }}>
                 {submitting ? c.formSending : c.formSubmit}
               </SiteButton>
@@ -1276,15 +1677,21 @@ function ContactSection({ t }) {
             <a href={`mailto:${c.directEmail}`}>{c.directEmail}</a>
           </p>
         </div>
-      </div>
-    </section>
+    </SectionBlock>
   );
 }
 
-function LegalPage({ t, pageKey }) {
+function LegalPage({ t, pageKey, setView }) {
   const page = t[pageKey];
+  const crumbs = [
+    { label: t.breadcrumbs.home, onClick: () => goToSection('top', setView) },
+    { label: t.pageTitles[pageKey] || page.title },
+  ];
   return (
     <div style={{ fontFamily: 'var(--font-body)' }}>
+      <div className="container page-shell">
+        <PageBreadcrumbs t={t} items={crumbs} />
+      </div>
       <div className="page-header">
         <h1>{page.title}</h1>
         <p style={{ fontSize: 'var(--text-sm)' }}>{page.updated}</p>
@@ -1304,9 +1711,16 @@ function LegalPage({ t, pageKey }) {
 function ResourcesPage({ setView, t, lang }) {
   const r = t.resources;
   const catalog = window.RESOURCE_CATALOG || {};
+  const crumbs = [
+    { label: t.breadcrumbs.home, onClick: () => goToSection('top', setView) },
+    { label: t.pageTitles.resources },
+  ];
 
   return (
     <div style={{ fontFamily: 'var(--font-body)' }}>
+      <div className="container page-shell">
+        <PageBreadcrumbs t={t} items={crumbs} />
+      </div>
       <div className="page-hero-band page-hero-band--compact">
         <SectionLabel light>{r.title}</SectionLabel>
         <h1>{r.title}</h1>
@@ -1365,7 +1779,7 @@ function ResourcesPage({ setView, t, lang }) {
         </div>
         <div className="resource-page-cta">
           <p>{r.cta}</p>
-          <SiteButton variant="primary" onClick={() => goToSection('programs', setView)}>{r.ctaBtn}</SiteButton>
+          <SiteButton variant="primary" onWhite onClick={() => goToSection('programs', setView)}>{r.ctaBtn}</SiteButton>
         </div>
       </div>
     </div>
@@ -1379,14 +1793,15 @@ function Buy({ setView, t, lang }) {
   const cohort = window.PB_PRICING.nextCohort[lang];
   const stripeReady = window.PB_PRICING_HELPERS.hasStripeLink(programId);
   const priceDisplay = window.PB_PRICING_HELPERS.displayPrice(programId, lang) || product?.display;
+  const paymentFailed = typeof window !== 'undefined' && window.location.hash.includes('payment=failed');
 
   React.useEffect(() => {
     if (!product || !isPurchasable(programId)) {
       goToSection('programs', setView);
       return;
     }
-    if (stripeReady) payWithStripe(programId);
-  }, [programId, product, stripeReady]);
+    if (stripeReady && !paymentFailed) payWithStripe(programId);
+  }, [programId, product, stripeReady, paymentFailed]);
 
   if (!product || !isPurchasable(programId)) return null;
 
@@ -1403,6 +1818,16 @@ function Buy({ setView, t, lang }) {
         <p>{b.subtitle}</p>
       </div>
       <div className="container section">
+        {paymentFailed && (
+          <StatusBanner variant="error" title={b.paymentFailedTitle} className="buy-page__status">
+            {b.paymentFailedBody}
+          </StatusBanner>
+        )}
+        {!stripeReady && (
+          <StatusBanner variant="warning" className="buy-page__status">
+            {b.stripePending}
+          </StatusBanner>
+        )}
         <Card style={{ maxWidth: '560px', margin: '0 auto' }}>
           <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'var(--text-lg)', margin: '0 0 16px' }}>{b.orderTitle}</h2>
           <div style={{ borderBottom: '1px solid var(--border-default)', paddingBottom: '16px', marginBottom: '16px' }}>
@@ -1417,18 +1842,15 @@ function Buy({ setView, t, lang }) {
             <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '28px' }}>{priceDisplay}</span>
           </div>
           <SiteButton variant="primary" style={{ width: '100%' }} onClick={pay}>
-            {stripeReady ? b.payNowCta : b.continueCta}
+            {paymentFailed ? b.paymentFailedCta : (stripeReady ? b.payNowCta : b.continueCta)}
           </SiteButton>
-          {!stripeReady && (
-            <p style={{ margin: '12px 0 0', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 'var(--leading-base)' }}>{b.stripePending}</p>
-          )}
-          {stripeReady && (
+          {stripeReady && !paymentFailed && (
             <p style={{ margin: '12px 0 0', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', textAlign: 'center' }}>{b.payNote}</p>
           )}
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
             <SiteButton variant="ghost" size="sm" onClick={() => goToSection('programs', setView)}>{b.backCta}</SiteButton>
             {!stripeReady && (
-              <SiteButton variant="ghost" size="sm" onClick={() => openDiagnostic('buy')}>{t.nav.bookCall}</SiteButton>
+              <SiteButton variant="ghost" size="sm" onClick={() => openCalendly('buy')}>{t.nav.bookCall}</SiteButton>
             )}
           </div>
         </Card>
@@ -1451,6 +1873,9 @@ function Checkout({ setView, t, lang }) {
         <p style={{ margin: '8px auto 0' }}>{c.subtitle}</p>
       </div>
       <div className="container">
+        <StatusBanner variant="success" title={c.successTitle || c.title} className="checkout-page__status">
+          {c.subtitle}
+        </StatusBanner>
         <Card style={{ maxWidth: '560px', margin: '0 auto 24px' }}>
           <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'var(--text-lg)', margin: '0 0 12px' }}>{c.cohortTitle}</h2>
           {product && (
@@ -1516,17 +1941,20 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    document.title = t.meta.title;
+    document.title = pageTitleForView(t, view);
     document.documentElement.lang = lang;
     const skip = document.querySelector('.skip-link');
     if (skip && t.a11y) skip.textContent = t.a11y.skipToContent;
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.content = t.meta.description;
     const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.content = t.meta.title;
+    if (ogTitle) ogTitle.content = pageTitleForView(t, view);
     const ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) ogDesc.content = t.meta.description;
     router.updateHreflang(lang, view);
+
+    const main = document.getElementById('main-content');
+    if (main && !isLandingView(view)) main.focus({ preventScroll: true });
 
     const origin = window.location.origin;
     const base = router.siteBase();
@@ -1607,23 +2035,26 @@ function App() {
   }, []);
 
   const utilityScreens = {
-    contact: () => <ContactPage t={t} />,
-    privacy: () => <LegalPage t={t} pageKey="privacy" />,
-    terms: () => <LegalPage t={t} pageKey="terms" />,
+    contact: () => <ContactPage t={t} setView={setView} />,
+    privacy: () => <LegalPage t={t} pageKey="privacy" setView={setView} />,
+    terms: () => <LegalPage t={t} pageKey="terms" setView={setView} />,
     resources: () => <ResourcesPage setView={setView} t={t} lang={lang} />,
     checkout: Checkout,
     buy: Buy,
   };
+
+  const scrollSectionIds = HOME_SCROLL_SECTIONS.map(s => s.id);
+  const activeSectionId = useScrollSpy(scrollSectionIds, view === 'home');
 
   const Screen = isLandingView(view)
     ? LandingPage
     : (utilityScreens[view] || LandingPage);
 
   return (
-    <div className="site-wrap">
-      <NavBar view={view} setView={setView} lang={lang} setLang={setLang} t={t} />
+    <div className="site-wrap site-wrap--mockup">
+      <NavBar view={view} setView={setView} lang={lang} setLang={setLang} t={t} activeSectionId={activeSectionId} />
       <main id="main-content" className="site-main" tabIndex={-1}>
-        <Screen setView={setView} t={t} lang={lang} />
+        <Screen setView={setView} t={t} lang={lang} activeSectionId={activeSectionId} />
       </main>
       <Footer setView={setView} lang={lang} setLang={setLang} t={t} />
     </div>

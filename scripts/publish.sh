@@ -32,7 +32,7 @@ git push -u origin main
 
 if command -v vercel >/dev/null 2>&1; then
   echo "Deploying to Vercel..."
-  vercel deploy --prod --yes
+  vercel deploy --prod --yes --name profesionistas-bilingues
 else
   echo "Vercel CLI not found. Install: npm i -g vercel"
   echo "Then run: vercel --prod"

@@ -1,17 +1,25 @@
 window.SITE_PHOTOS = {
   hero: {
     src: './assets/hero-professional.png',
-    credit: 'AI-generated placeholder — replace with client photography',
+    credit: '',
     creditHref: '',
-    aiGenerated: true,
+    aiGenerated: false,
   },
   teresa: {
     src: './assets/hero-professional.png',
-    credit: 'AI-generated placeholder — replace with Teresa photo',
+    credit: '',
+    creditHref: '',
+    aiGenerated: false,
+    /* Reserved for About — do not reuse on the homepage alongside hero */
+    homepageExclusive: 'hero',
+  },
+  daniel: {
+    src: './assets/testimonial-daniel.png',
+    credit: 'AI-generated placeholder',
     creditHref: '',
     aiGenerated: true,
   },
-  daniel: {
+  approach: {
     src: './assets/testimonial-daniel.png',
     credit: 'AI-generated placeholder',
     creditHref: '',
@@ -23,10 +31,6 @@ window.SITE_PHOTOS = {
     creditHref: '',
     aiGenerated: true,
   },
-  cohort: {
-    src: './assets/hero-professional.png',
-    credit: 'AI-generated placeholder',
-    creditHref: '',
-    aiGenerated: true,
-  },
+  /* Team / org visual — no portrait (avoid repeating hero face) */
+  organizations: null,
 };
