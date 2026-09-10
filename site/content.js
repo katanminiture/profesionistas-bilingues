@@ -355,7 +355,7 @@ window.SITE_CONTENT = {
     organizations: {
       label: 'For Organizations',
       title: 'Develop your organization\'s bilingual talent.',
-      subtitle: 'Assessment, training, and certification for teams that need to perform, lead, and grow in English.',
+      subtitle: 'Assessment, professional development, and certification for teams that need to perform, lead, and grow in English.',
       pathLabel: 'Assessment → Programs → Certification',
       programName: 'Bilingual Workforce Development',
       focusAreas: [

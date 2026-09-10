@@ -200,7 +200,7 @@ function LangSwitch({ lang, setLang, a11y, variant = 'pill' }) {
         aria-label={a11y.langEn}
         onClick={() => setLang('en')}
       >
-        {isText ? 'English' : 'EN'}
+        EN
       </button>
       {isText && <span className="lang-toggle__sep" aria-hidden="true">|</span>}
       <button
@@ -210,7 +210,7 @@ function LangSwitch({ lang, setLang, a11y, variant = 'pill' }) {
         aria-label={a11y.langEs}
         onClick={() => setLang('es')}
       >
-        {isText ? 'Español' : 'ES'}
+        ES
       </button>
     </div>
   );
@@ -860,7 +860,7 @@ function NavBar({ view, setView, lang, setLang, t, activeSectionId }) {
         </nav>
 
         <div className="site-header__actions">
-          <LangSwitch lang={lang} setLang={setLang} a11y={a11y} variant="text" />
+          <LangSwitch lang={lang} setLang={setLang} a11y={a11y} />
           <SiteButton
             variant="primary"
             size="sm"

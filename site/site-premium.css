@@ -150,6 +150,108 @@ body {
   user-select: none;
 }
 
+/* Pill toggle — single source of truth (overrides site.css header rules) */
+.site-header .lang-toggle.lang-toggle--pill {
+  box-sizing: border-box;
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  width: 84px;
+  height: 34px;
+  padding: 2px;
+  gap: 2px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 26, 58, 0.12);
+  background: var(--color-white);
+  flex-shrink: 0;
+}
+
+.site-header .lang-toggle.lang-toggle--pill button {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  color: rgba(15, 26, 58, 0.5);
+  cursor: pointer;
+  transition: background 0.2s var(--ease-premium), color 0.2s var(--ease-premium);
+}
+
+.site-header .lang-toggle.lang-toggle--pill button.active {
+  background: var(--color-ink-navy);
+  color: var(--color-white);
+  font-weight: 700;
+}
+
+.site-header .lang-toggle.lang-toggle--pill button:hover:not(.active) {
+  color: var(--color-ink-navy);
+}
+
+.lang-toggle--pill {
+  box-sizing: border-box;
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  width: 84px;
+  height: 34px;
+  padding: 2px;
+  gap: 2px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 26, 58, 0.12);
+  background: var(--color-white);
+  flex-shrink: 0;
+}
+
+.lang-toggle--pill button {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  color: rgba(15, 26, 58, 0.5);
+  cursor: pointer;
+  transition: background 0.2s var(--ease-premium), color 0.2s var(--ease-premium);
+}
+
+.lang-toggle--pill button.active {
+  background: var(--color-ink-navy);
+  color: var(--color-white);
+  font-weight: 700;
+}
+
+@media (max-width: 960px) {
+  .site-header .lang-toggle.lang-toggle--pill {
+    width: 88px;
+    height: 36px;
+  }
+}
+
 .nav-link {
   font-size: var(--text-sm);
   font-weight: 500;
